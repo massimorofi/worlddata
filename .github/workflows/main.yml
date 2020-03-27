@@ -20,7 +20,7 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@2.0.0
         env:
           FTP_SERVER: ftpupload.net
-          FTP_USERNAME: epiz_25364283
-          FTP_PASSWORD: ${{ secrets.test72_ftp_password }}
+          FTP_USERNAME: epiz_25412810
+          FTP_PASSWORD: ${{ secrets.worlddata_ftp_password }}
           LOCAL_DIR: dist
           REMOTE_DIR: htdocs
