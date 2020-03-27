@@ -6,23 +6,21 @@ jobs:
     name: FTP-Deploy-Action
     runs-on: ubuntu-latest
     strategy:
-     matrix:
-       node-version: [ 10.x]
+      matrix:
+        node-version: [10.x]
     steps:
-    - uses: actions/checkout@master
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - run: npm run dist --if-present
-    - name: FTP-Deploy-Action
-      uses: SamKirkland/FTP-Deploy-Action@2.0.0
-      env:
-        FTP_SERVER: ftp://ftpupload.net/htdocs
-        FTP_USERNAME: epiz_25364283
-        FTP_PASSWORD: ${{ secrets.test72_ftp_password }}
-        LOCAL_DIR: dist
-
-
-
+      - uses: actions/checkout@master
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm run dist --if-present
+      - name: FTP-Deploy-Action
+        uses: SamKirkland/FTP-Deploy-Action@2.0.0
+        env:
+          FTP_SERVER: ftpupload.net
+          FTP_USERNAME: epiz_25364283
+          FTP_PASSWORD: ${{ secrets.test72_ftp_password }}
+          LOCAL_DIR: dist
+          REMOTE_DIR: htdocs
