@@ -17,13 +17,12 @@ jobs:
     - run: npm install
     - run: npm run dist --if-present
     - name: FTP-Deploy-Action
-      uses: SamKirkland/FTP-Deploy-Action@2.0.0
+      uses: SamKirkland/FTP-Deploy-Action@3.0.0
       with:
-        ftp-server: ftpupload.net
+        ftp-server: ftp://ftpupload.net/htdocs
         ftp-username: epiz_25364283
         ftp-password: ${{ secrets.test72_ftp_password }}
         local-dir: dist
-        remote-dir: htdocs
-      env:
-        ARGS: --delete --exclude README.md --exclude .git --exclude .github 
+
+
 
