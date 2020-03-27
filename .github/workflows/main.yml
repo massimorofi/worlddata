@@ -17,7 +17,7 @@ jobs:
     - run: npm install
     - run: npm run dist --if-present
     - name: FTP-Deploy-Action
-      uses: SamKirkland/FTP-Deploy-Action@3.0.0
+      uses: SamKirkland/FTP-Deploy-Action@2.0.0
       with:
         ftp-server: ftpupload.net
         ftp-username: epiz_25364283
