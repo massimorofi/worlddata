@@ -4,7 +4,8 @@
 <head>
     <title>Coronavirus [COVID-19] Statistics</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="COVID-19" content="Coronavirus (COVID-19) Italy Statistics">
+    <meta name="keywords" content="COVID-19, Coronavirus, Italy, Numbers, statistics, death, conditions">
     <!--script src="node_modules/chart.js/dist/Chart.min.js"></script-->
 
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
@@ -15,12 +16,19 @@
 
 
 <body>
-    <h1>CoronaVirus [COVID-19] Italy Statistics</h1>
+    <h1>
+        [COVID-19] Italy <br>
+        Statistics
+    </h1>
     <div>
-        <canvas id="MainChart" width="400" height="400"></canvas>
-    </div>
-    <div>
-        <canvas id="Details" width="400" height="400"></canvas>
+        <div title="Main Data">
+            <h2>Main Data</h2>
+            <canvas id="MainChart" width="400" height="400"></canvas>
+        </div>
+        <div title="Details">
+            <h2>Details</h2>
+            <canvas id="Details" width="400" height="400"></canvas>
+        </div>
     </div>
     <script type="module" src="./js/script.min.js"></script>
 

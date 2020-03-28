@@ -246,7 +246,7 @@ gulp.task('js:format', () => {
     .pipe(gulp.dest('src'))
 })
 
-gulp.task('js:watch', () => gulp.watch(settings.js.source, gulp.series('js:dev')))
+gulp.task('js:watch', () => gulp.watch(settings.js.source, gulp.series('js')))
 
 // -------------------------------------
 //   Task: Move
