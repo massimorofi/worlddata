@@ -213,7 +213,7 @@ gulp.task('html:format', () => {
     .pipe(gulp.dest('src'))
 })
 
-gulp.task('html:watch', () => gulp.watch(settings.html.watch, gulp.series('html:dev')))
+gulp.task('html:watch', () => gulp.watch(settings.html.watch, gulp.series('html')))
 
 // -------------------------------------
 //   Task: JS
@@ -261,7 +261,7 @@ gulp.task('move', () => {
 })
 
 gulp.task('move:watch', () =>
-  gulp.watch(['src/*/*', '!src/{js,scss,img,inc}/**/*'], gulp.series('move'))
+  gulp.watch(['src/*/*', '!src/{js,css,scss,img,inc}/**/*'], gulp.series('move'))
 )
 
 // -------------------------------------
@@ -290,7 +290,6 @@ gulp.task('images:watch', () =>
       .src(path)
       .pipe(
         plugins.imagemin([
-          plugins.imagemin.jpegtran({ progressive: true }),
           plugins.imagemin.optipng({ optimizationLevel: 3 }),
           plugins.imagemin.svgo({
             plugins: [{ removeViewBox: false }]
@@ -333,7 +332,7 @@ gulp.task('dev', gulp.series('clean',gulp.parallel('css:dev', 'js', 'move','copy
 gulp.task(
   'watch',
   gulp.series(
-    'dev',
+    'default',
     gulp.parallel(
       'css:watch',
       'html:watch',

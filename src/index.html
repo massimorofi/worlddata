@@ -6,8 +6,7 @@
     <meta charset="utf-8">
     <meta name="COVID-19" content="Coronavirus (COVID-19) Italy Statistics">
     <meta name="keywords" content="COVID-19, Coronavirus, Italy, Numbers, statistics, death, conditions">
-    <!--script src="node_modules/chart.js/dist/Chart.min.js"></script-->
-
+    <!--link rel="stylesheet" type="text/css" href="css/styles.css"-->
     <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
 </head>
@@ -16,21 +15,43 @@
 
 
 <body>
-    <h1>
-        [COVID-19] Italy <br>
-        Statistics
+    <!--TEST AREA-->
+
+    <!--END TEST-->
+    <h1 style="color: rgb(16, 190, 16); text-align: center;">
+        <strong>[COVID-19] Italy Statistics</strong>
     </h1>
-    <div>
-        <div title="Main Data">
-            <h2>Main Data</h2>
-            <canvas id="MainChart" width="400" height="400"></canvas>
-        </div>
-        <div title="Details">
-            <h2>Details</h2>
-            <canvas id="Details" width="400" height="400"></canvas>
+    <hr>
+    <div class="container">
+        <div>
+            <div title="Main Data">
+                <h2>Main Data</h2>
+                <canvas id="MainChart" width="400" height="400"></canvas>
+            </div>
+            <hr>
+            <div title="Daily Increase">
+                <h2>Daily Increases</h2>
+                <canvas id="DailyInc" width="400" height="400"></canvas>
+            </div>
+            <hr>
+            <div title="Detailed Data">
+                <h2>Details</h2>
+                <canvas id="Details" width="400" height="400"></canvas>
+            </div>
+            <hr>
         </div>
     </div>
     <script type="module" src="./js/script.min.js"></script>
+    <!-- GOOGLE ANALYTICS-->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-41047512-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-41047512-2');
+    </script>
+
 
 </body>
 
