@@ -148,8 +148,12 @@ function detailedGraph(lab, ospedalizzati, ricoverati, domiciliari, intensiva) {
 
 function loadJSON(fileName, callback) {
     var xobj = new XMLHttpRequest();
+    xobj.open('GET', fileName, true);
     xobj.overrideMimeType("application/json");
-    xobj.open('GET', fileName, true); // Replace 'my_data' with the path to your file
+    xobj.setRequestHeader('Access-Control-Allow-Credentials' , true);
+    xobj.setRequestHeader('Access-Control-Allow-Origin', '*');
+    xobj.setRequestHeader('Access-Control-Allow-Methods' , 'GET');
+    xobj.setRequestHeader('Access-Control-Allow-Headers' , 'application/json');
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
             // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
