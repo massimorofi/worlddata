@@ -53,6 +53,8 @@ loadJSON("data/dpc-covid19-ita-andamento-nazionale.json", function (response) {
 
 
 //------------- DATA TABLES
+function pad(s) { return (s < 10) ? '0' + s : s; }
+
 function createDataTable(data) {
     $(document).ready(function () {
         var t = $('#data-table').DataTable();
@@ -62,8 +64,7 @@ function createDataTable(data) {
 
             var time = new Date(data[i].data);
             t.row.add([
-                time.getDate() + '/' + time.getMonth(),
-                data[i].stato,
+                pad(time.getMonth()+1)+"-"+pad(time.getDate()),
                 data[i].ricoverati_con_sintomi,
                 data[i].terapia_intensiva,
                 data[i].totale_ospedalizzati,
