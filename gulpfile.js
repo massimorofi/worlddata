@@ -43,7 +43,10 @@ const plugins = require('gulp-load-plugins')({
 
 const settings = {
   css: {
-    source: './src/scss/**/*.{scss, sass, css}',
+    source: [
+      'node_modules/bootstrap/dist/css/bootstrap.min.css',
+      './src/scss/**/*.{scss, sass, css}'
+    ],
     dest: './dist/css'
   },
   html: {
@@ -59,7 +62,15 @@ const settings = {
     }
   },
   js: {
-    source: './src/js/**/*.js',
+    source: [
+      'node_modules/bootstrap/dist/js/bootstrap.min.js',
+      'node_modules/bootstrap/dist/js/bootstrap.min.js.map',
+      'node_modules/jquery/dist/jquery.min.js',
+      'node_modules/jquery/dist/jquery.min.map',
+      'node_modules/popper.js/dist/umd/popper.min.js',
+      'node_modules/popper.js/dist/umd/popper.min.js.map',
+      './src/js/**/*.js'
+    ],
     entry: './src/js/script.js',
     dest: './dist/js'
   }
@@ -73,7 +84,7 @@ const del = require('del');
 //--------------------------------------
 //    Task: CopyData
 //--------------------------------------
-gulp.task('copyData',()=>gulp.src('./src/assets/**/*.*').pipe(gulp.dest('./dist')));
+gulp.task('copyData', () => gulp.src('./src/assets/**/*.*').pipe(gulp.dest('./dist')));
 
 //--------------------------------------
 //    Task: Clean
@@ -105,19 +116,7 @@ gulp.task('css', () => {
     .pipe(gulp.dest(settings.css.dest))
 })
 
-gulp.task('css:dev', () => {
-  return gulp
-    .src(settings.css.source)
-    .pipe(
-      plugins
-        .sass({
-          includePaths: ['node_modules']
-        })
-        .on('error', plugins.sass.logError)
-    )
-    .pipe(plugins.autoprefixer())
-    .pipe(gulp.dest(settings.css.dest))
-})
+
 
 gulp.task('css:watch', () => {
   return plugins
@@ -181,30 +180,7 @@ gulp.task('html', () => {
     .pipe(gulp.dest(settings.html.dest))
 })
 
-gulp.task('html:dev', () => {
-  const source = gulp.src([
-    `${settings.css.dest}/*.css`,
-    `${settings.js.dest}/*.js`,
-    `!${settings.css.dest}/*.min.css`,
-    `!${settings.js.dest}/*.min.js`
-  ])
-  return gulp
-    .src(settings.html.source)
-    .pipe(
-      plugins.fileInclude({
-        prefix: '@@',
-        basepath: 'src'
-      })
-    )
-    .pipe(
-      plugins.inject(source, {
-        addRootSlash: true,
-        ignorePath: 'dist',
-        removeTags: true
-      })
-    )
-    .pipe(gulp.dest(settings.html.dest))
-})
+
 
 gulp.task('html:format', () => {
   return gulp
@@ -232,12 +208,14 @@ gulp.task('js', () =>
     .pipe(gulp.dest(settings.js.dest))
 )
 
-gulp.task('js:dev', () =>
+gulp.task('jslibs', () =>
   gulp
-    .src(settings.js.entry)
-    .pipe(plugins.bro())
+    .src(settings.js.source)
     .pipe(gulp.dest(settings.js.dest))
 )
+
+
+
 
 gulp.task('js:format', () => {
   return gulp
@@ -282,7 +260,6 @@ gulp.task('images', () =>
     .pipe(gulp.dest('dist/img'))
 )
 
-gulp.task('images:dev', () => gulp.src('src/img/**/*').pipe(gulp.dest('dist/img')))
 
 gulp.task('images:watch', () =>
   gulp.watch('src/img/**/*').on('change', path => {
@@ -306,7 +283,6 @@ gulp.task('images:watch', () =>
 
 gulp.task('browser-sync', () => {
   plugins.browserSync.init({ server: { baseDir: 'dist', directory: true } })
-
   gulp.watch('dist/**/*').on('change', plugins.browserSync.reload)
 })
 
@@ -316,14 +292,9 @@ gulp.task('browser-sync', () => {
 // This talk involves compiling the html, css and javascript,
 // moving fonts and other static assets and then optimizing images
 
-gulp.task('default', gulp.series('clean',gulp.parallel('css', 'js', 'move','copyData'), 'html', 'images', 'critical'))
+gulp.task('default', gulp.series('clean', gulp.parallel('css', 'jslibs','js', 'move', 'copyData'), 'html', 'images', 'critical'))
 // gulp.task('default', ['css', 'html', 'js', 'move', 'images']);
 
-// -------------------------------------
-//   Task: Dev
-// -------------------------------------
-
-gulp.task('dev', gulp.series('clean',gulp.parallel('css:dev', 'js', 'move','copyData'), 'html', 'images'))
 
 // -------------------------------------
 //   Task: Watch

@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="COVID-19" content="Coronavirus (COVID-19) Italy Statistics">
     <meta name="keywords" content="COVID-19, Coronavirus, Italy, Numbers, statistics, death, conditions">
-    <!--link rel="stylesheet" type="text/css" href="css/styles.css"-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
 </head>
@@ -21,20 +21,45 @@
     <h1 style="color: rgb(16, 190, 16); text-align: center;">
         <strong>[COVID-19] Italy Statistics</strong>
     </h1>
+    <div class="alert alert-primary" role="alert">
+        COVID-19 UPDATES!!!
+    </div>
     <hr>
-    <div class="container">
-        <div>
-            <div title="Main Data"  class="chart-container" style="position: relative;">
+    <div class="container-fluid">
+        <div class="col">
+            <div>
+                <table class="table table-sm table-bordered table-hover" id="data-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Date</th>
+                            <th>Country</th>
+                            <th>Mild</th>
+                            <th>ICU</th>
+                            <th>Tot Hosp</th>
+                            <th>Home</th>
+                            <th>Current</th>
+                            <th>New</th>
+                            <th>Healed</th>
+                            <th>Deaths</th>
+                            <th>Tot</th>
+                            <th>Tampons</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+
+                </table>
+            </div>
+            <div title="Main Data" class="chart-container" style="position: relative;">
                 <h2>Main Data</h2>
                 <canvas id="MainChart"></canvas>
             </div>
             <hr>
-            <div title="Daily Increase"  class="chart-container" style="position: relative;">
+            <div title="Daily Increase" class="chart-container" style="position: relative;">
                 <h2>Daily Increases</h2>
                 <canvas id="DailyInc"></canvas>
             </div>
             <hr>
-            <div title="Detailed Data"  class="chart-container" style="position: relative;">
+            <div title="Detailed Data" class="chart-container" style="position: relative;">
                 <h2>Details</h2>
                 <canvas id="Details"></canvas>
             </div>
@@ -51,7 +76,11 @@
         gtag('js', new Date());
         gtag('config', 'UA-41047512-2');
     </script>
+    <!-- #### LIBRARIES #### -->
 
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 
 </body>
 

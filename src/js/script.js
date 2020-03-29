@@ -1,13 +1,10 @@
 // required modules
 var Chart = require('../../node_modules/chart.js/dist/Chart.js');
-// Bootstrap wants jQuery global
-//window.jQuery = $ = require('../../node_modules/jquery/dist/jquery.js')
-require('../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js');
-//require('../../node_modules/bootstrap/dist/css/bootstrap.css')
 
 
 
-//load Json
+
+//LOAD JSON DATA then creates Data Table and Graphs
 
 loadJSON("data/dpc-covid19-ita-andamento-nazionale.json", function (response) {
     // Parse JSON string into object
@@ -43,19 +40,51 @@ loadJSON("data/dpc-covid19-ita-andamento-nazionale.json", function (response) {
         diff_casi[i] = casi[i] - casi[i - 1];
         diff_int[i] = intensiva[i] - intensiva[i - 1];
     }
-
-
-
+    // Create data table
+    createDataTable(data)
     // Create Main Chart
     mainGraph(lab, casi, decessi, guariti);
-
     // Create DetailChart
     detailedGraph(lab, ospedalizzati, ricoverati, domiciliari, intensiva, tamponi);
     // Create Daily Increses 
-    dailyIncGraph(lab,diff_int,diff_casi,diff_dead);
+    dailyIncGraph(lab, diff_int, diff_casi, diff_dead);
 });
 
 
+//------------- DATA TABLES
+function createDataTable(data) {
+    var table = document.getElementById('data-table');
+    for (var i = 0; i < data.length; i++) {
+        // create a new row
+        var newRow = table.insertRow(table.length);
+        // create a new cell
+        var cell = newRow.insertCell(0);
+        var time=new Date( data[i].data);
+        cell.innerHTML = time.getDate()+'/'+time.getMonth();
+        cell = newRow.insertCell(1);
+        cell.innerHTML = data[i].stato;
+        cell = newRow.insertCell(2);
+        cell.innerHTML = data[i].ricoverati_con_sintomi;
+        cell = newRow.insertCell(3);
+        cell.innerHTML = data[i].terapia_intensiva;
+        cell = newRow.insertCell(4);
+        cell.innerHTML = data[i].totale_ospedalizzati;
+        cell = newRow.insertCell(5);
+        cell.innerHTML = data[i].isolamento_domiciliare;
+        cell = newRow.insertCell(6);
+        cell.innerHTML = data[i].totale_attualmente_positivi;
+        cell = newRow.insertCell(7);
+        cell.innerHTML = data[i].nuovi_attualmente_positivi;
+        cell = newRow.insertCell(8);
+        cell.innerHTML = data[i].dimessi_guariti;
+        cell = newRow.insertCell(9);
+        cell.innerHTML = data[i].deceduti;
+        cell = newRow.insertCell(10);
+        cell.innerHTML = data[i].totale_casi;
+        cell = newRow.insertCell(11);
+        cell.innerHTML = data[i].tamponi;
+    }
+};
 
 //------------- MAIN GRAPH
 
@@ -172,7 +201,7 @@ function detailedGraph(lab, ospedalizzati, ricoverati, domiciliari, intensiva, t
 };
 
 //------------- Daily INC GRAPH
-function dailyIncGraph(lab,diff_int,diff_casi,diff_dead) {
+function dailyIncGraph(lab, diff_int, diff_casi, diff_dead) {
     var ctx = document.getElementById('DailyInc').getContext("2d");
     var detailChart = new Chart(ctx, {
         type: 'bar',
