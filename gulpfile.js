@@ -45,6 +45,7 @@ const settings = {
   css: {
     source: [
       'node_modules/bootstrap/dist/css/bootstrap.min.css',
+      'node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css',
       './src/scss/**/*.{scss, sass, css}'
     ],
     dest: './dist/css'
@@ -102,18 +103,7 @@ gulp.task('clean', clean);
 gulp.task('css', () => {
   return gulp
     .src(settings.css.source)
-    .pipe(
-      plugins
-        .sass({
-          includePaths: ['node_modules']
-        })
-        .on('error', plugins.sass.logError)
-    )
-    .pipe(plugins.autoprefixer())
     .pipe(gulp.dest(settings.css.dest)) // Pipe unminified
-    .pipe(plugins.csso())
-    .pipe(plugins.rename({ extname: '.min.css' }))
-    .pipe(gulp.dest(settings.css.dest))
 })
 
 
@@ -249,14 +239,6 @@ gulp.task('move:watch', () =>
 gulp.task('images', () =>
   gulp
     .src('src/img/**/*')
-    .pipe(
-      plugins.imagemin([
-        plugins.imagemin.optipng({ optimizationLevel: 3 }),
-        plugins.imagemin.svgo({
-          plugins: [{ removeViewBox: false }]
-        })
-      ])
-    )
     .pipe(gulp.dest('dist/img'))
 )
 

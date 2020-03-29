@@ -1,6 +1,7 @@
 // required modules
 var Chart = require('../../node_modules/chart.js/dist/Chart.js');
-
+var $ = require('jquery');
+var dt = require('datatables.net')(window, $);
 
 
 
@@ -53,37 +54,31 @@ loadJSON("data/dpc-covid19-ita-andamento-nazionale.json", function (response) {
 
 //------------- DATA TABLES
 function createDataTable(data) {
-    var table = document.getElementById('data-table');
-    for (var i = 0; i < data.length; i++) {
-        // create a new row
-        var newRow = table.insertRow(table.length);
-        // create a new cell
-        var cell = newRow.insertCell(0);
-        var time=new Date( data[i].data);
-        cell.innerHTML = time.getDate()+'/'+time.getMonth();
-        cell = newRow.insertCell(1);
-        cell.innerHTML = data[i].stato;
-        cell = newRow.insertCell(2);
-        cell.innerHTML = data[i].ricoverati_con_sintomi;
-        cell = newRow.insertCell(3);
-        cell.innerHTML = data[i].terapia_intensiva;
-        cell = newRow.insertCell(4);
-        cell.innerHTML = data[i].totale_ospedalizzati;
-        cell = newRow.insertCell(5);
-        cell.innerHTML = data[i].isolamento_domiciliare;
-        cell = newRow.insertCell(6);
-        cell.innerHTML = data[i].totale_attualmente_positivi;
-        cell = newRow.insertCell(7);
-        cell.innerHTML = data[i].nuovi_attualmente_positivi;
-        cell = newRow.insertCell(8);
-        cell.innerHTML = data[i].dimessi_guariti;
-        cell = newRow.insertCell(9);
-        cell.innerHTML = data[i].deceduti;
-        cell = newRow.insertCell(10);
-        cell.innerHTML = data[i].totale_casi;
-        cell = newRow.insertCell(11);
-        cell.innerHTML = data[i].tamponi;
-    }
+    $(document).ready(function () {
+        var t = $('#data-table').DataTable();
+        var table = document.getElementById('data-table');
+        for (var i = 0; i < data.length; i++) {
+            // create a new row
+
+            var time = new Date(data[i].data);
+            t.row.add([
+                time.getDate() + '/' + time.getMonth(),
+                data[i].stato,
+                data[i].ricoverati_con_sintomi,
+                data[i].terapia_intensiva,
+                data[i].totale_ospedalizzati,
+                data[i].isolamento_domiciliare,
+                data[i].totale_attualmente_positivi,
+                data[i].nuovi_attualmente_positivi,
+                data[i].dimessi_guariti,
+                data[i].deceduti,
+                data[i].totale_casi,
+                data[i].tamponi
+            ]).draw(false);
+        }
+    });
+
+
 };
 
 //------------- MAIN GRAPH
