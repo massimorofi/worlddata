@@ -1,7 +1,6 @@
 on:
- schedule:
-  - cron: '55 21 * * *'
-
+  schedule:
+    - cron: '55 21 * * *'
 name: Publish New Data on Website
 jobs:
   FTP-Deploy-Action:
