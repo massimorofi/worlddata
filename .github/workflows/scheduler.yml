@@ -1,8 +1,7 @@
-name: DataUploader
-
 on:
   schedule:
     - cron: '02 20 * * *'
+name: DataUploader
 
 jobs:
   linux:
