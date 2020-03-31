@@ -69,8 +69,8 @@ function createDataTable(data) {
                 data[i].terapia_intensiva,
                 data[i].totale_ospedalizzati,
                 data[i].isolamento_domiciliare,
-                data[i].totale_attualmente_positivi,
-                data[i].nuovi_attualmente_positivi,
+                data[i].totale_positivi,
+                data[i].nuovi_positivi,
                 data[i].dimessi_guariti,
                 data[i].deceduti,
                 data[i].totale_casi,
@@ -204,20 +204,30 @@ function dailyIncGraph(lab, diff_int, diff_casi, diff_dead) {
         data: {
             labels: lab,
             datasets: [{
+                type: 'bar',
                 label: 'Critical',
                 data: diff_int,
                 fill: true,
                 borderWidth: 1
             },
             {
+                type: 'bar',
                 label: 'Deads',
                 data: diff_dead,
                 fill: true,
                 borderWidth: 1
             },
             {
-                label: 'Home',
+                type: 'bar',
+                label: 'Daily',
                 data: diff_casi,
+                fill: true,
+            },
+            {
+                type: 'line',
+                label: 'Outlook',
+                data: diff_casi,
+                borderColor: 'green',
                 fill: true,
             }
             ]
