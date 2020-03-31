@@ -2,7 +2,7 @@ name: DataUploader
 
 on:
   schedule:
-    - cron: '20 16 * * *'
+    - cron: '25 18 * * *'
 
 jobs:
   linux:
