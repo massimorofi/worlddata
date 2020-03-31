@@ -1,4 +1,4 @@
-on: #####push
+on: push
 name: Publish Website
 
 jobs:
@@ -14,7 +14,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install
+      - run: date
+      - run: npm ci
       - run: npm run dist --if-present
       - name: FTP-Deploy-Action
         uses: SamKirkland/FTP-Deploy-Action@2.0.0
