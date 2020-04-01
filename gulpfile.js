@@ -46,6 +46,7 @@ const settings = {
     source: [
       'node_modules/bootstrap/dist/css/bootstrap.min.css',
       'node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css',
+      'node_modules/mdbootstrap/css/mdb.min.css',
       './src/scss/**/*.{scss, sass, css}'
     ],
     dest: './dist/css'
@@ -70,9 +71,11 @@ const settings = {
       'node_modules/jquery/dist/jquery.min.map',
       'node_modules/popper.js/dist/umd/popper.min.js',
       'node_modules/popper.js/dist/umd/popper.min.js.map',
+      'node_modules/mdbootstrap/js/mdb.min.js',
+      'node_modules/mdbootstrap/js/mdb.min.js.map',
       './src/js/**/*.js'
     ],
-    entry: './src/js/script.js',
+    entry: './src/js/main.js',
     dest: './dist/js'
   }
 }
