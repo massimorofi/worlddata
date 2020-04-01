@@ -5,16 +5,18 @@ name: DataUploader
 
 jobs:
   linux:
-    name: Linux build on node ${{ matrix.node_version }}
+    name: Linux build on node 
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node_version: [8.x, 10.x]
+        node_version: [10.x]
     steps:
     - name: CreateDataDir
       run: mkdir -p dist/data
     - name: UploadData
       run: wget -O dist/data/dpc-covid19-ita-andamento-nazionale.json https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json
+    - name: List data Dir
+      run: ls -la dist/data
     - name: FTP-Deploy-Action
       uses: SamKirkland/FTP-Deploy-Action@2.0.0
       env:
