@@ -1,6 +1,6 @@
-on: push
-#  schedule:
-#    - cron: '02 20 * * *'
+on:
+   schedule:
+     - cron: '30 16 * * *'
 name: DataUploader
 
 jobs:
