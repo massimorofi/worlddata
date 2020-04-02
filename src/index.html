@@ -25,99 +25,17 @@
 
 
 <body>
-
-
-
-
-    <!-- Card -->
-    <div class="card">
-        <!-- Card image -->
-        <img class="card-img-top" src="./img/COVID-19.jpg" alt="COVID-19 IMAGE">
-        <!-- Card content -->
-        <div class="card-body text-center">
-            <!-- Title -->
-            <h5 class="card-title"><a>Daily Pandemic Numbers</a></h5>
-            <hr>
-            <!-- Text -->
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        <p class="alert alert-secondary" id="data.tamponi">tamponi</p>
-                        <p class="alert alert-primary" id="data.totale_casi">totale_casi</p>
-                    </div>
-                    <div class="col-sm">
-                        <p class="alert alert-success" id="data.dimessi_guariti">dimessi_guariti</p>
-                        <p class="alert alert-danger" id="data.deceduti">deceduti</p>
-                    </div>
-                </div>
-                <hr>
-                <h5 class="card-title"><a>Details</a></h5>
-                <div class="row">
-                    <p class="alert alert-warning" id="data.terapia_intensiva">terapia_intensiva</p>
-                    <p class="alert alert-primary" id="data.totale_ospedalizzati">totale_ospedalizzati</p>
-                    <p class="alert alert-primary" id="data.isolamento_domiciliare">isolamento_domiciliare</p>
-                    <p class="alert alert-primary" id="data.totale_positivi">totale_positivi</p>
-                    <p class="alert alert-primary" id="data.nuovi_positivi">nuovi_positivi</p>
-                </div>
-            </div>
-        </div>
+<!-- This injects sections of HTML available in the inc directory -->
+    <div id="top_page">
+        @@include('inc/top_page.html')
     </div>
-    <!-- Card -->
-
-
-
-    <div>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="daily-tab" data-toggle="tab" href="#daily" role="tab"
-                    aria-controls="daily" aria-selected="true">Daily</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " id="main-tab" data-toggle="tab" href="#main" role="tab" aria-controls="main"
-                    aria-selected="false">Main</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="details-tab" data-toggle="tab" href="#details" role="tab"
-                    aria-controls="details" aria-selected="false">Details</a>
-            </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="daily" role="tabpanel" aria-labelledby="daily-tab">
-                <canvas id="DailyInc"></canvas>
-            </div>
-            <div class="tab-pane fade " id="main" role="tabpanel" aria-labelledby="main-tab">
-                <canvas id="MainChart"></canvas>
-            </div>
-            <div class="tab-pane fade" id="details" role="tabpanel" aria-labelledby="details-tab">
-                <canvas id="DetailsChart"></canvas>
-            </div>
-        </div>
+    <div id="graphs_section">
+        @@include('inc/graphs_section.html')
     </div>
-
     <br>
-
-
-    <div>
-        <table class="table display cell-border compact " id="data-table" style="width:100%">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Date</th>
-                    <th>Mild</th>
-                    <th>ICU</th>
-                    <th>Tot Hosp</th>
-                    <th>Home</th>
-                    <th>Current</th>
-                    <th>New</th>
-                    <th>Healed</th>
-                    <th>Deaths</th>
-                    <th>Tot</th>
-                    <th>Tampons</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+    <div id="summary_table">
+        @@include('inc/summary_table.html')
     </div>
-
 
     <!-- ================== SCRIPTS ========================-->
     <script type="module" src="./js/main.min.js"></script>

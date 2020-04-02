@@ -1,11 +1,24 @@
 const { createDataTable, mainGraph, detailedGraph, dailyIncGraph, dailyStats} = require("./graphs");
 
-const { loadJSON } = require("./utils");
+const { loadJSON, loadHTML } = require("./utils");
 
 // required modules
 var $ = require('jquery');
 var dt = require('datatables.net')(window, $);
+var loaded=false;
 
+/* Load HML Parts to be injected into index.html
+loadHTML("summary_table.html",function(response){
+    document.getElementById("summary_table").innerHTML = response;
+});
+loadHTML("top_page.html",function(response){
+    document.getElementById("top_page").innerHTML = response;
+});
+
+loadHTML("graphs_section.html",function(response){
+    document.getElementById("graphs_section").innerHTML = response;
+});
+*/
 
 
 //LOAD JSON DATA then creates Data Table and Graphs
@@ -14,7 +27,6 @@ loadJSON("data/dpc-covid19-ita-andamento-nazionale.json", function (response) {
     // Parse JSON string into object
     //console.log("DATA=..." + response);
     var data = JSON.parse(response);
-    console.log(data.length);
     var casi = [];
     var lab = [];
     var decessi = [];
@@ -54,6 +66,9 @@ loadJSON("data/dpc-covid19-ita-andamento-nazionale.json", function (response) {
     dailyIncGraph(lab, diff_int, diff_casi, diff_dead);
     dailyStats(data);
 });
+
+
+
 
 
 
