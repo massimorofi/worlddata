@@ -6,7 +6,7 @@ var $ = require('jquery');
 function pad(s) { return (s < 10) ? '0' + s : s; }
 function createDataTable(data) {
     $(document).ready(function () {
-        var t = $('#data-table').DataTable();
+        var t = $('#data-table').DataTable({ "deferRender": true });
         var table = document.getElementById('data-table');
         for (var i = 0; i < data.length; i++) {
             // create a new row
@@ -24,6 +24,7 @@ function createDataTable(data) {
                 data[i].totale_casi,
                 data[i].tamponi
             ]).draw(false);
+
         }
     });
 }
@@ -66,21 +67,32 @@ function mainGraph(lab, casi, decessi, guariti) {
             ]
         },
         options: {
+            animation: {
+                duration: 0 // general animation time
+            },
+            hover: {
+                animationDuration: 0 // duration of animations when hovering an item
+            },
+            responsiveAnimationDuration: 0,
             scales: {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true
                     }
                 }]
+            },
+            title: {
+                display: true,
+                text: 'Main Data'
             }
         }
     });
 }
 exports.mainGraph = mainGraph;
-;
+
 //------------- Detailed GRAPH
 function detailedGraph(lab, ospedalizzati, ricoverati, domiciliari, intensiva, tamponi) {
-    var ctx = document.getElementById('Details');
+    var ctx = document.getElementById('DetailsChart');
     var detailChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -134,6 +146,13 @@ function detailedGraph(lab, ospedalizzati, ricoverati, domiciliari, intensiva, t
         },
         options: {
             responsive: true,
+            animation: {
+                duration: 0 // general animation time
+            },
+            hover: {
+                animationDuration: 0 // duration of animations when hovering an item
+            },
+            responsiveAnimationDuration: 0,
             title: {
                 display: true,
                 text: 'Detailed Stats'
@@ -142,11 +161,11 @@ function detailedGraph(lab, ospedalizzati, ricoverati, domiciliari, intensiva, t
     });
 }
 exports.detailedGraph = detailedGraph;
-;
+
 //------------- Daily INC GRAPH
 function dailyIncGraph(lab, diff_int, diff_casi, diff_dead) {
-    var ctx = document.getElementById('DailyInc').getContext("2d");
-    var detailChart = new Chart(ctx, {
+    var ctx = document.getElementById('DailyInc');
+    var dailyChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: lab,
@@ -181,9 +200,16 @@ function dailyIncGraph(lab, diff_int, diff_casi, diff_dead) {
         },
         options: {
             responsive: true,
+            animation: {
+                duration: 0 // general animation time
+            },
+            hover: {
+                animationDuration: 0 // duration of animations when hovering an item
+            },
+            responsiveAnimationDuration: 0,
             title: {
                 display: true,
-                text: 'Detailed Stats'
+                text: 'Indicators'
             },
             elements: {
                 rectangle: {
@@ -212,3 +238,20 @@ function colorize(ctx) {
     }
     return 'rgba(128, 255, 125, 1)';
 }
+
+
+function dailyStats(data) {
+    $(document).ready(function () {
+        var latest = data[data.length - 1];
+        document.getElementById("data.terapia_intensiva").innerHTML = "Intensive Care Unit: " + latest.terapia_intensiva;
+        document.getElementById("data.totale_ospedalizzati").innerHTML = "Hospitalized: " + latest.totale_ospedalizzati;
+        document.getElementById("data.isolamento_domiciliare").innerHTML = "At Home with symptoms: " + latest.isolamento_domiciliare;
+        document.getElementById("data.totale_positivi").innerHTML = "Currently Infected: " + latest.totale_positivi;
+        document.getElementById("data.nuovi_positivi").innerHTML = "New Cases: " + latest.nuovi_positivi;
+        document.getElementById("data.dimessi_guariti").innerHTML = "Recovered: " + latest.dimessi_guariti;
+        document.getElementById("data.deceduti").innerHTML = "Dead Toll: " + latest.deceduti;
+        document.getElementById("data.totale_casi").innerHTML = " Total Number of Cases: " + latest.totale_casi;
+        document.getElementById("data.tamponi").innerHTML = " Total Number of Tested: " + latest.tamponi;
+    });
+}
+exports.dailyStats = dailyStats;

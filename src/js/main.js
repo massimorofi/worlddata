@@ -1,4 +1,4 @@
-const { createDataTable, mainGraph, detailedGraph, dailyIncGraph } = require("./graphs");
+const { createDataTable, mainGraph, detailedGraph, dailyIncGraph, dailyStats} = require("./graphs");
 
 const { loadJSON } = require("./utils");
 
@@ -52,6 +52,7 @@ loadJSON("data/dpc-covid19-ita-andamento-nazionale.json", function (response) {
     detailedGraph(lab, ospedalizzati, ricoverati, domiciliari, intensiva, tamponi);
     // Create Daily Increses 
     dailyIncGraph(lab, diff_int, diff_casi, diff_dead);
+    dailyStats(data);
 });
 
 
