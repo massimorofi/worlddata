@@ -35,6 +35,11 @@
 // -------------------------------------
 
 const gulp = require('gulp')
+const del = require('del');
+const merge = require('gulp-merge');
+const concat = require('gulp-concat');
+const BABEL_POLYFILL = './node_modules/@babel/polyfill/browser.js';
+
 const plugins = require('gulp-load-plugins')({
   lazy: true,
   overridePattern: false,
@@ -73,14 +78,13 @@ const settings = {
       'node_modules/popper.js/dist/umd/popper.min.js.map',
       'node_modules/mdbootstrap/js/mdb.min.js',
       'node_modules/mdbootstrap/js/mdb.min.js.map',
-      './src/js/**/*.js'
+      'src/js/jquery.dataTables.min.js'
     ],
     entry: './src/js/main.js',
     dest: './dist/js'
   }
 }
 
-const del = require('del');
 
 
 ////////////////////////// TASKS  DEFINITION 
@@ -136,7 +140,7 @@ gulp.task('critical', () =>
       plugins.critical.stream({
         base: 'dist/',
         inline: true,
-        css: ['dist/css/styles.min.css']
+        css: ['dist/css/styles.css']
       })
     )
     .on('error', err => {
@@ -189,8 +193,10 @@ gulp.task('html:watch', () => gulp.watch(settings.html.watch, gulp.series('html'
 // -------------------------------------
 
 gulp.task('js', () =>
+
   gulp
-    .src(settings.js.entry)
+    .src([BABEL_POLYFILL, settings.js.entry])
+    .pipe(concat('main.js'))
     .pipe(
       plugins.bro({
         plugin: [plugins.tinyify],
@@ -277,7 +283,7 @@ gulp.task('browser-sync', () => {
 // This talk involves compiling the html, css and javascript,
 // moving fonts and other static assets and then optimizing images
 
-gulp.task('default', gulp.series('clean', gulp.parallel('css', 'jslibs','js', 'move', 'copyData'), 'html', 'images', 'critical'))
+gulp.task('default', gulp.series('clean', gulp.parallel('css', 'jslibs', 'js', 'move', 'copyData'), 'html', 'images', 'critical'))
 // gulp.task('default', ['css', 'html', 'js', 'move', 'images']);
 
 

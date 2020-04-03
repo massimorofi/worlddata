@@ -11,13 +11,16 @@
     "format": "gulp format"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.8.7",
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
     "datatables.net-bs4": "^1.10.20",
     "del": "^5.1.0",
+    "gulp-merge": "^0.1.1",
     "jquery": "^3.4.1",
     "mdbootstrap": "^4.15.0",
-    "popper.js": "^1.16.1"
+    "popper.js": "^1.16.1",
+    "save-dev": "0.0.1-security"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -29,6 +32,7 @@
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-bro": "^2.0.0",
+    "gulp-concat": "^2.6.1",
     "gulp-csso": "^4.0.1",
     "gulp-file-include": "^2.1.1",
     "gulp-html-beautify": "^1.0.1",
@@ -42,6 +46,7 @@
     "gulp-util": "^3.0.8",
     "gulp-watch-sass": "^1.4.1",
     "merge-stream": "^2.0.0",
+    "puppeteer": "^2.1.1",
     "tinyify": "^2.5.2"
   }
 }
