@@ -80,6 +80,7 @@ const settings = {
       'node_modules/mdbootstrap/js/mdb.min.js.map',
       'src/js/jquery.dataTables.min.js'
     ],
+    monitor:['src/**/*.js'],
     entry: './src/js/main.js',
     dest: './dist/js'
   }
@@ -223,7 +224,7 @@ gulp.task('js:format', () => {
     .pipe(gulp.dest('src'))
 })
 
-gulp.task('js:watch', () => gulp.watch(settings.js.source, gulp.series('js')))
+gulp.task('js:watch', () => gulp.watch(settings.js.monitor, gulp.series('js')))
 
 // -------------------------------------
 //   Task: Move
