@@ -1,11 +1,11 @@
-const { createDataTable, mainGraph, detailedGraph, dailyIncGraph, dailyStats} = require("./graphs");
+const { createDataTable, mainGraph, detailedGraph, dailyIncGraph, dailyStats } = require("./graphs");
 
 const { loadJSON, loadHTML } = require("./utils");
 
 // required modules
 var $ = require('jquery');
 var dt = require('datatables.net')(window, $);
-var loaded=false;
+var loaded = false;
 
 /* Load HML Parts to be injected into index.html
 loadHTML("summary_table.html",function(response){
@@ -63,7 +63,7 @@ loadJSON("data/dpc-covid19-ita-andamento-nazionale.json", function (response) {
     // Create DetailChart
     detailedGraph(lab, ospedalizzati, ricoverati, domiciliari, intensiva, tamponi);
     // Create Daily Increses 
-    dailyIncGraph(lab, diff_int, diff_casi, diff_dead);
+    dailyIncGraph(data, lab, diff_int, diff_casi, diff_dead);
     dailyStats(data);
 });
 

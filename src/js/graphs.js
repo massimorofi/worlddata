@@ -30,6 +30,17 @@ function createDataTable(data) {
 }
 exports.createDataTable = createDataTable;
 
+function dailymovingAverage(data) {
+    var mavg = [];
+    mavg[0] = [data.lenght];
+    mavg[1] = [data.lenght]
+    for (let i = 2; i < data.length; i++) {
+        mavg[0][i] = (data[i - 2].nuovi_positivi + data[i - 1].nuovi_positivi + data[i].nuovi_positivi) / 3;
+        mavg[1][i] = (data[i - 2].deceduti + data[i - 1].deceduti + data[i].deceduti) / 3;
+    }
+    return mavg;
+}
+
 //------------- MAIN GRAPH
 function mainGraph(lab, casi, decessi, guariti) {
     var ctx = document.getElementById('MainChart');
@@ -163,7 +174,8 @@ function detailedGraph(lab, ospedalizzati, ricoverati, domiciliari, intensiva, t
 exports.detailedGraph = detailedGraph;
 
 //------------- Daily INC GRAPH
-function dailyIncGraph(lab, diff_int, diff_casi, diff_dead) {
+function dailyIncGraph(data, lab, diff_int, diff_casi, diff_dead) {
+    var mavg = dailymovingAverage(data);
     var ctx = document.getElementById('DailyInc');
     var dailyChart = new Chart(ctx, {
         type: 'line',
@@ -185,14 +197,14 @@ function dailyIncGraph(lab, diff_int, diff_casi, diff_dead) {
             },
             {
                 type: 'bar',
-                label: 'Daily',
+                label: 'New_Daily',
                 data: diff_casi,
                 fill: true,
             },
             {
                 type: 'line',
-                label: 'Outlook',
-                data: diff_casi,
+                label: 'Trend',
+                data: mavg[0],
                 borderColor: 'lightgreen',
                 fill: true,
             }
@@ -232,7 +244,7 @@ function colorize(ctx) {
             return 'rgba(255, 0, 0, 1)';
             break;
         case 2:
-            return 'rgba(0, 255, 0, 1)';
+            return 'rgba(0, 128, 128, 1)';
             break;
         default:
     }
@@ -243,6 +255,8 @@ function colorize(ctx) {
 function dailyStats(data) {
     $(document).ready(function () {
         var latest = data[data.length - 1];
+        var newLocal = new Date(latest.data);
+        document.getElementById("data.data").innerHTML = (newLocal).toDateString()+" at "+newLocal.toLocaleTimeString();
         document.getElementById("data.terapia_intensiva").innerHTML = "Intensive Care Unit: " + latest.terapia_intensiva;
         document.getElementById("data.totale_ospedalizzati").innerHTML = "Hospitalized: " + latest.totale_ospedalizzati;
         document.getElementById("data.isolamento_domiciliare").innerHTML = "At Home with symptoms: " + latest.isolamento_domiciliare;

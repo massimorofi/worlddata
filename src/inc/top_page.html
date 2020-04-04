@@ -1,11 +1,16 @@
 <!-- TOP PAGE Card -->
 <div class="card">
     <!-- Card image -->
-    <img class="card-img-top" src="./img/COVID-19.jpg" alt="COVID-19 IMAGE">
+    <div class="view overlay">
+        <img class="card-img-top" src="./img/COVID-19.jpg" alt="COVID-19 IMAGE">
+        <a>
+            <div class="mask rgba-white-slight"></div>
+        </a>
+    </div>
     <!-- Card content -->
     <div class="card-body text-center">
         <!-- Title -->
-        <h5 class="card-title"><strong>Daily Pandemic Numbers</strong></h5>
+        <h5 class="card-title">Daily Pandemic Numbers <br>[<i id="data.data"></i>]</h5>
         <hr>
         <!-- Text -->
         <div class="container">
@@ -42,6 +47,22 @@
                     <p class="alert alert-primary" id="data.isolamento_domiciliare">isolamento_domiciliare</p>
                     <p class="alert alert-primary" id="data.totale_positivi">totale_positivi</p>
                 </div>
+            </div>
+            <div class="row">
+                <p class="alert alert-primary" id="data.summary">
+                    <b> Summary </b>
+                    <br>
+                    The published data are taken from the Italian Protezione Civile Open Data on Github.
+                    <br>
+                    The percentages calculated above are instead produced by this website here.
+                    <br>
+                    <i><b style="color:rgb(o, 0, 0); text-align:justify;">DISAMBIGUATION: the percentages (Mortality &
+                            Recovery) are
+                            calculated using as base the cases that had an outcome. Hence those are not a
+                            correctstatistical evidence,yet are the current rate given the numbers.</b></i>
+                    <br>
+                    <a href="https://github.com/pcm-dpc/COVID-19">DataSource</a>
+                </p>
             </div>
         </div>
     </div>
