@@ -270,7 +270,7 @@ function dailyStats(data) {
         var closed = Number(latest.deceduti) + Number(latest.dimessi_guariti);
         var mortality = parseFloat((Number(latest.deceduti) / closed) * 100).toFixed(2);
         var recovery = parseFloat((Number(latest.dimessi_guariti) / closed) * 100).toFixed(2);
-        console.log(" #DATA: " + closed + "," + mortality + "," + recovery);
+        //console.log(" #DATA: " + closed + "," + mortality + "," + recovery);
         document.getElementById("closed.cases").innerHTML = "Closed Cases: " + closed;
         document.getElementById("mortality").innerHTML = " Mortality Rate (current) " + mortality + "%";
         document.getElementById("recovery").innerHTML = " Recovery Rate: " + recovery + "%";
