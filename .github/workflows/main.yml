@@ -24,4 +24,4 @@ jobs:
           FTP_USERNAME: epiz_25412810
           FTP_PASSWORD: ${{ secrets.worlddata_ftp_password }}
           LOCAL_DIR: dist
-          REMOTE_DIR: htdocs
+          REMOTE_DIR: geokei.com/htdocs

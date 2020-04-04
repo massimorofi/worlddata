@@ -7,7 +7,6 @@ function pad(s) { return (s < 10) ? '0' + s : s; }
 function createDataTable(data) {
     $(document).ready(function () {
         var t = $('#data-table').DataTable({ "deferRender": true });
-        var table = document.getElementById('data-table');
         for (var i = 0; i < data.length; i++) {
             // create a new row
             var time = new Date(data[i].data);
@@ -254,9 +253,10 @@ function colorize(ctx) {
 
 function dailyStats(data) {
     $(document).ready(function () {
-        var latest = data[data.length - 1];
+        var index=data.length-1;
+        var latest = data[index];
         var newLocal = new Date(latest.data);
-        document.getElementById("data.data").innerHTML = (newLocal).toDateString()+" at "+newLocal.toLocaleTimeString();
+        document.getElementById("data.data").innerHTML = (newLocal).toDateString() + " at " + newLocal.toLocaleTimeString();
         document.getElementById("data.terapia_intensiva").innerHTML = "Intensive Care Unit: " + latest.terapia_intensiva;
         document.getElementById("data.totale_ospedalizzati").innerHTML = "Hospitalized: " + latest.totale_ospedalizzati;
         document.getElementById("data.isolamento_domiciliare").innerHTML = "At Home with symptoms: " + latest.isolamento_domiciliare;

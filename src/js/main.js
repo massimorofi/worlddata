@@ -27,6 +27,7 @@ loadJSON("data/dpc-covid19-ita-andamento-nazionale.json", function (response) {
     // Parse JSON string into object
     //console.log("DATA=..." + response);
     var data = JSON.parse(response);
+    //console.log(data);
     var casi = [];
     var lab = [];
     var decessi = [];
@@ -48,6 +49,7 @@ loadJSON("data/dpc-covid19-ita-andamento-nazionale.json", function (response) {
         intensiva[i] = data[i].terapia_intensiva;
         tamponi[i] = data[i].tamponi / 10;
     }
+ 
     var diff_dead = [];
     var diff_casi = [];
     var diff_int = [];
@@ -56,6 +58,7 @@ loadJSON("data/dpc-covid19-ita-andamento-nazionale.json", function (response) {
         diff_casi[i] = casi[i] - casi[i - 1];
         diff_int[i] = intensiva[i] - intensiva[i - 1];
     }
+    
     // Create data table
     createDataTable(data)
     // Create Main Chart
