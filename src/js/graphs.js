@@ -1,12 +1,15 @@
 var Chart = require('chart.js');
-var $ = require('jquery');
+
 
 
 //------------- DATA TABLES
 function pad(s) { return (s < 10) ? '0' + s : s; }
 function createDataTable(data) {
     $(document).ready(function () {
-        var t = $('#data-table').DataTable({ "deferRender": true });
+        var t = $('#data-table').DataTable({
+            "deferRender": true,
+            "order": [[0, "desc"]]
+        });
         for (var i = 0; i < data.length; i++) {
             // create a new row
             var time = new Date(data[i].data);
@@ -29,19 +32,29 @@ function createDataTable(data) {
 }
 exports.createDataTable = createDataTable;
 
-function dailymovingAverage(data) {
+function dailymovingAverage(data, diff_dead) {
     var mavg = [];
-    mavg[0] = [data.lenght];
-    mavg[1] = [data.lenght]
-    for (let i = 2; i < data.length; i++) {
-        mavg[0][i] = (data[i - 2].nuovi_positivi + data[i - 1].nuovi_positivi + data[i].nuovi_positivi) / 3;
-        mavg[1][i] = (data[i - 2].deceduti + data[i - 1].deceduti + data[i].deceduti) / 3;
+    mavg[0] = [(data.length + 2)];
+    mavg[1] = [(data.length + 2)];
+    for (let i = 0; i < 2; i++) {
+        mavg[0][i] = 0;
+        mavg[1][i] = 0;
     }
+    for (let i = 2; i < data.length; i++) {
+        mavg[0][i] = (Number(data[i - 2].nuovi_positivi) + Number(data[i - 1].nuovi_positivi) + Number(data[i].nuovi_positivi)) / 3;
+        mavg[1][i] = (diff_dead[i - 2] + diff_dead[i - 1] + diff_dead[i]) / 3;
+    }
+    for (let i = data.length; i < (data.length + 3); i++) {
+        mavg[0][i] = (mavg[0][i - 3] + mavg[0][i - 2] + mavg[0][i - 1]) / 3;
+        mavg[1][i] = (mavg[1][i - 3] + mavg[1][i - 2] + mavg[1][i - 1]) / 3;
+    }
+
     return mavg;
 }
 
+
 //------------- MAIN GRAPH
-function mainGraph(lab, casi, decessi, guariti) {
+function mainGraph(lab, casi, deceduti, guariti) {
     var ctx = document.getElementById('MainChart');
     var myChart = new Chart(ctx, {
         type: 'line',
@@ -58,7 +71,7 @@ function mainGraph(lab, casi, decessi, guariti) {
             },
             {
                 label: 'Deceased',
-                data: decessi,
+                data: deceduti,
                 fill: false,
                 borderColor: [
                     'rgba(255, 0, 0, 1)'
@@ -174,7 +187,7 @@ exports.detailedGraph = detailedGraph;
 
 //------------- Daily INC GRAPH
 function dailyIncGraph(data, lab, diff_int, diff_casi, diff_dead) {
-    var mavg = dailymovingAverage(data);
+    var mavg = dailymovingAverage(data, diff_dead);
     var ctx = document.getElementById('DailyInc');
     var dailyChart = new Chart(ctx, {
         type: 'line',
@@ -205,6 +218,13 @@ function dailyIncGraph(data, lab, diff_int, diff_casi, diff_dead) {
                 label: 'Trend',
                 data: mavg[0],
                 borderColor: 'lightgreen',
+                fill: true,
+            },
+            {
+                type: 'line',
+                label: 'Death-Trend',
+                data: mavg[1],
+                borderColor: 'red',
                 fill: true,
             }
             ]
@@ -250,10 +270,10 @@ function colorize(ctx) {
     return 'rgba(128, 255, 125, 1)';
 }
 
-
+// Top pane with data and statistics insidetop_page.html
 function dailyStats(data) {
     $(document).ready(function () {
-        var index=data.length-1;
+        var index = data.length - 1;
         var latest = data[index];
         var newLocal = new Date(latest.data);
         document.getElementById("data.data").innerHTML = (newLocal).toDateString() + " at " + newLocal.toLocaleTimeString();
@@ -278,3 +298,66 @@ function dailyStats(data) {
     });
 }
 exports.dailyStats = dailyStats;
+
+
+function regionalGraph(lab, totale_casi, deceduti, guariti) {
+    var ctx = document.getElementById('RegionalData');
+    var regionalChart = new Chart(ctx, {
+        type: 'horizontalBar',
+        data: {
+            labels: lab,
+            datasets: [{
+                label: 'Total Infects',
+                data: totale_casi,
+                fill: true,
+                borderColor: 'blue',
+                backgroundColor: 'blue',
+                borderWidth: 1
+            },
+            {
+                label: 'Deads',
+                data: deceduti,
+                fill: true,
+                borderColor: 'red',
+                backgroundColor: 'red',
+                borderWidth: 1
+            },
+            {
+                label: 'Healed',
+                data: guariti,
+                fill: true,
+                borderColor: 'green',
+                backgroundColor: 'green',
+                borderWidth: 1
+            }
+            ]
+        },
+        options: {
+            responsive: true,
+            animation: {
+                duration: 0 // general animation time
+            },
+            hover: {
+                animationDuration: 0 // duration of animations when hovering an item
+            },
+            responsiveAnimationDuration: 0,
+            title: {
+                display: true,
+                text: 'Regional BreakDown'
+            },
+            elements: {
+                rectangle: {
+                    borderWidth: 2,
+                }
+            },
+            scales: {
+                x: {
+                    suggestedMin: 0,
+                    suggestedMax: 55000
+                }
+            }
+        }
+    });
+};
+
+exports.regionalGraph = regionalGraph;

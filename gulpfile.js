@@ -78,6 +78,7 @@ const settings = {
       'node_modules/popper.js/dist/umd/popper.min.js.map',
       'node_modules/mdbootstrap/js/mdb.min.js',
       'node_modules/mdbootstrap/js/mdb.min.js.map',
+      'node_modules/jquery-csv/src/jquery.csv.min.js',
       'src/js/jquery.dataTables.min.js'
     ],
     monitor:['src/**/*.js'],

@@ -19,14 +19,16 @@
     <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
     <!--GOOGLE ADSENSE-->
-    <script data-ad-client="ca-pub-6871931694109579" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script data-ad-client="ca-pub-6871931694109579" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 
 
 
 
 <body>
-    <div class="conatiner"></div>
+    <!--MAIN PAGE LAYOUT -->
+    <div class="conatiner">
     <!-- This injects sections of HTML available in the inc directory -->
     <div id="top_page">
         @@include('inc/top_page.html')
@@ -34,11 +36,12 @@
     <div id="graphs_section">
         @@include('inc/graphs_section.html')
     </div>
-    <br>
-    <div id="summary_table">
-        @@include('inc/summary_table.html')
+    <div id="tables_section">
+        @@include('inc/tables_section.html')
     </div>
     </div>
+</div>
+
     <!-- ================== SCRIPTS ========================-->
 
     <!-- ################ LIBRARIES ########################### -->
@@ -51,6 +54,9 @@
 
     <!--MAIN SCRIPT-->
     <script src="./js/main.min.js"></script>
+    <!--Components-->
+    <!-- AddToAny BEGIN -->
+    <script async src="https://static.addtoany.com/menu/page.js"></script>
 
     <!-- GOOGLE ANALYTICS-->
     <!-- Global site tag (gtag.js) - Google Analytics -->
