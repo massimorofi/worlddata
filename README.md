@@ -17,7 +17,6 @@ https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-
 
 
 
-
 # Typescript Boilerplate used for this site
 [TS Boilerplate](https://github.com/massimorofi/ts_boilerplate)
 
