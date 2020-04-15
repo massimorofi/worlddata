@@ -1,63 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <title>Coronavirus [COVID-19] Statistics</title>
-    <meta charset="utf-8">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="COVID-19" content="Coronavirus (COVID-19) Italy Statistics">
-    <meta name="description" content="Coronavirus (COVID-19) Italy Statistics, daily updates">
-    <meta name="keywords" content="COVID-19, Coronavirus, Italy, Numbers, statistics, death, conditions">
+    <meta name="description" content="World daily updates">
+    <meta name="keywords"
+        content="World, Numbers, Statistics, Updates, News, COVID-19, Coronavirus, Italy, Numbers, statistics, death, conditions">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
 
-    <!-- STYLESHEETS DEFINITION -->
-    <link rel="stylesheet" href="css/bootstrap.min.css" async>
-    <!-- Material Design Bootstrap -->
-    <link rel="stylesheet" href="css/mdb.min.css" async>
-    <link rel="stylesheet" href="css/jquery.dataTables.min.css" async>
+    <title>GEOKEI Geographical Key Indicators</title>
     <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
-    <!--GOOGLE ADSENSE-->
-    <script data-ad-client="ca-pub-6871931694109579" async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- inject:css -->
+    <!-- endinject -->
 </head>
 
 
-
-
 <body>
-    <!--MAIN PAGE LAYOUT -->
-    <div class="conatiner">
-    <!-- This injects sections of HTML available in the inc directory -->
-    <div id="top_page">
-        @@include('inc/top_page.html')
+    <!--Main Container-->
+    <div class="container-fluid">
+        <!--Navigation Menu-->
+        @@include('html/sections/navigation.html')
+        <br>
+        <!--Dynamic Content loaded via navigation and routing-->
+        <div class="row">
+            <div class="col-12" id="panel">
+              
+            </div>
+        </div>
     </div>
-    <div id="graphs_section">
-        @@include('inc/graphs_section.html')
-    </div>
-    <div id="tables_section">
-        @@include('inc/tables_section.html')
-    </div>
-    </div>
-</div>
 
-    <!-- ================== SCRIPTS ========================-->
 
-    <!-- ################ LIBRARIES ########################### -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.dataTables.min.js"></script>
-    <!-- MDB core JavaScript -->
-    <script type="text/javascript" src="js/mdb.min.js"></script>
+    <!--LOADING SCRIPTS-->
 
-    <!--MAIN SCRIPT-->
-    <script src="./js/main.min.js"></script>
-    <!--Components-->
-    <!-- AddToAny BEGIN -->
+    <!-- inject:js -->
+    <!-- endinject -->
+
+    <!-- AddOns BEGIN -->
     <script async src="https://static.addtoany.com/menu/page.js"></script>
-
     <!-- GOOGLE ANALYTICS-->
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-41047512-2"></script>
@@ -68,8 +52,6 @@
         gtag('config', 'UA-41047512-2');
     </script>
 
-
 </body>
-
 
 </html>

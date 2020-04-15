@@ -1,4 +1,5 @@
-Statistics Charts using open data --- BETA---
+
+# Statistics Charts using open data --- BETA---
 - COVID-19 Italy data set used as sample
 
 BUILD
@@ -14,4 +15,9 @@ https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-
 
 ![Publish Website](https://github.com/massimorofi/worlddata/workflows/Publish%20Website/badge.svg)
 
+
+
+
+# Typescript Boilerplate used for this site
+[TS Boilerplate](https://github.com/massimorofi/ts_boilerplate)
 

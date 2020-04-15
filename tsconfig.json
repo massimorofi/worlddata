@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "downlevelIteration": true,
+        "lib": [
+            "dom",
+            "es5",
+            "es2015.collection",
+            "es2015.iterable"
+        ]
+    },
+    "files": [
+        "src/main.ts"
+    ],
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "useBuiltIns": "entry"
+            }
+        ]
+    ]
+}

@@ -1,317 +1,243 @@
-// *************************************
-//
-//   Gulpfile
-//
-// *************************************
-//
-// Available tasks:
-//   `gulp`
-//   `gulp dev`
-//   `gulp watch`
-//   `gulp format`
-//
-// -------------------------------------
-//   Modules
-// -------------------------------------
-//
-// gulp                  : The streaming build system
-// gulp-sass             : Compile Sass
-// gulp-autoprefixer     : Prefix CSS
-// gulp-csso             : Optimize CSS (clean, compress, restructure)
-// gulp-rename           : Rename files
-// gulp-watch-sass       : Watches for SASS modifications - with streaming
-// gulp-file-include     : Include files in other files
-// gulp-bro              : Javascript bundler with Browserify and incremental builds
-// gulp-imagemin         : Minify PNG, JPEG, GIF and SVG images
-// gulp-inline-imagesize : Inline the size of images into into html comments
-// gulp-prettier         : Format javascript
-// gulp-html-beautify    : Format HTML
-// merge-stream          : Merge multiple gulp stream sources
-// browser-sync          : Sync browser refresh & CSS repalcement with file system changes
-// critical              : Inline render path critical css and async load the other css
-// tinyify               : Javascript optimizer (minify, remove dead code, tree shake, collapse...)
-// babelify              : Convert ES6/ESNext code to ES5
-//
-// -------------------------------------
+// Import dependencies via require
+var gulp = require('gulp');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var tsify = require('tsify');
+var sourcemaps = require('gulp-sourcemaps');
+var buffer = require('vinyl-buffer');
+var del = require('del');
 
-const gulp = require('gulp')
-const del = require('del');
-const merge = require('gulp-merge');
-const concat = require('gulp-concat');
-const BABEL_POLYFILL = './node_modules/@babel/polyfill/browser.js';
-
-const plugins = require('gulp-load-plugins')({
-  lazy: true,
-  overridePattern: false,
-  pattern: '{critical,tinyify,babelify,browser-sync,merge-stream}'
+var plugins = require('gulp-load-plugins')({
+    lazy: true,
+    overridePattern: false,
+    pattern: '{critical,tinyify,babelify,browser-sync,merge-stream}'
 })
 
-const settings = {
-  css: {
-    source: [
-      'node_modules/bootstrap/dist/css/bootstrap.min.css',
-      'node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css',
-      'node_modules/mdbootstrap/css/mdb.min.css',
-      './src/scss/**/*.{scss, sass, css}'
-    ],
-    dest: './dist/css'
-  },
-  html: {
-    watch: './src/**/*.html',
-    source: './src/*.html',
-    dest: './dist',
-    formatting: {
-      indent: 4,
-      indent_char: ' ',
-      wrap_line_length: 78,
-      brace_style: 'expand',
-      unformatted: ['sub', 'sup', 'b', 'i', 'u', 'span', 'quote', 'strong']
+
+
+/**
+ * ###############################################################
+ * Project setting, directories and include files are defined here
+ */
+var settings = {
+    distdir: './dist',
+    css: {
+        source: [
+            'node_modules/bootstrap/dist/css/bootstrap.min.css',
+            'node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css',
+            './src/scss/**/*.{scss,sass,css}'
+        ],
+        dest: ''
+    },
+    html: {
+        watch: './src/**/*.html',
+        source: './src/*.html',
+        dest: '',
+        formatting: {
+            indent: 4,
+            indent_char: ' ',
+            wrap_line_length: 78,
+            brace_style: 'expand',
+            unformatted: ['sub', 'sup', 'b', 'i', 'u', 'span', 'quote', 'strong']
+        }
+    },
+    assets: {
+        source: './src/assets/**/*.*',
+        dest: ''
+    },
+    js: {
+        vendor: 'dist/libs/',
+        libs: [
+            'node_modules/jquery/dist/jquery.min.js',
+            'node_modules/popper.js/dist/umd/popper.min.js',
+            'node_modules/bootstrap/dist/js/bootstrap.min.js',
+            'src/js/jquery.dataTables.min.js'
+        ],
+        libdest: [],
+        monitor: ['src/**/*.ts'],
+        entry: './src/js/main.ts',
+        output: 'bundle.js',
+        dest: ''
     }
-  },
-  js: {
-    source: [
-      'node_modules/bootstrap/dist/js/bootstrap.min.js',
-      'node_modules/bootstrap/dist/js/bootstrap.min.js.map',
-      'node_modules/jquery/dist/jquery.min.js',
-      'node_modules/jquery/dist/jquery.min.map',
-      'node_modules/popper.js/dist/umd/popper.min.js',
-      'node_modules/popper.js/dist/umd/popper.min.js.map',
-      'node_modules/mdbootstrap/js/mdb.min.js',
-      'node_modules/mdbootstrap/js/mdb.min.js.map',
-      'node_modules/jquery-csv/src/jquery.csv.min.js',
-      'src/js/jquery.dataTables.min.js'
-    ],
-    monitor:['src/**/*.js'],
-    entry: './src/js/main.js',
-    dest: './dist/js'
-  }
 }
+//initialize settings
+settings.css.dest = settings.distdir + '/css';
+settings.js.dest = settings.distdir + '/js';
+settings.html.dest = settings.distdir + '/html';
+settings.assets.dest = settings.distdir + '/';
+// add libaries to the dist list with the porder given in settings.js.libs
+for (let i = 0; i < settings.js.libs.length; i++) {
+    var lib = settings.js.libs[i];
+    var res = lib.split("/");
+    settings.js.libdest[i] = settings.js.vendor + res[res.length - 1];
+};
+console.log(settings.js.libdest);
 
-
-
-////////////////////////// TASKS  DEFINITION 
+// ############### TASKS DEFINITION 
 
 //--------------------------------------
 //    Task: CopyData
 //--------------------------------------
-gulp.task('copyData', () => gulp.src('./src/assets/**/*.*').pipe(gulp.dest('./dist')));
+gulp.task('copyData', () => gulp.src(settings.assets.source).pipe(gulp.dest(settings.distdir)));
+
+
 
 //--------------------------------------
 //    Task: Clean
 //--------------------------------------
 
 function clean() {
-  return del(['dist/**', '!dist']);
+    return del([settings.distdir + '/**', '!' + settings.distdir]);
 }
 gulp.task('clean', clean);
-
-// -------------------------------------
-//   Task: CSS
-// -------------------------------------
-
-gulp.task('css', () => {
-  return gulp
-    .src(settings.css.source)
-    .pipe(gulp.dest(settings.css.dest)) // Pipe unminified
-})
-
-
-
-gulp.task('css:watch', () => {
-  return plugins
-    .watchSass(settings.css.source, {
-      includePaths: ['node_modules'],
-      verbose: true
-    })
-    .pipe(
-      plugins
-        .sass({
-          includePaths: ['node_modules']
-        })
-        .on('error', plugins.sass.logError)
-    )
-    .pipe(plugins.autoprefixer())
-    .pipe(gulp.dest(settings.css.dest))
-    .pipe(plugins.browserSync.reload({ stream: true }))
-})
-
-gulp.task('critical', () =>
-  gulp
-    .src('dist/*.html')
-    .pipe(
-      plugins.critical.stream({
-        base: 'dist/',
-        inline: true,
-        css: ['dist/css/styles.css']
-      })
-    )
-    .on('error', err => {
-      console.error(err.message)
-    })
-    .pipe(gulp.dest('dist'))
-)
-
-// -------------------------------------
-//   Task: HTML
-// -------------------------------------
-
-gulp.task('html', () => {
-  // sources to inject script/link tags for
-  const source = gulp.src([`${settings.css.dest}/*.min.css`, `${settings.js.dest}/*.min.js`])
-
-  return gulp
-    .src(settings.html.source)
-    .pipe(
-      plugins.fileInclude({
-        prefix: '@@',
-        basepath: 'src'
-      })
-    )
-    .pipe(plugins.inlineImagesize())
-    .pipe(plugins.htmlBeautify(settings.html.formatting))
-    .pipe(
-      plugins.inject(source, {
-        addRootSlash: true,
-        ignorePath: 'dist',
-        removeTags: true
-      })
-    )
-    .pipe(gulp.dest(settings.html.dest))
-})
-
-
-
-gulp.task('html:format', () => {
-  return gulp
-    .src(settings.html.source)
-    .pipe(plugins.htmlBeautify(settings.html.formatting))
-    .pipe(gulp.dest('src'))
-})
-
-gulp.task('html:watch', () => gulp.watch(settings.html.watch, gulp.series('html')))
-
-// -------------------------------------
-//   Task: JS
-// -------------------------------------
-
-gulp.task('js', () =>
-
-  gulp
-    .src([BABEL_POLYFILL, settings.js.entry])
-    .pipe(concat('main.js'))
-    .pipe(
-      plugins.bro({
-        plugin: [plugins.tinyify],
-        transform: [plugins.babelify.configure({ presets: ['@babel/preset-env'] })]
-      })
-    )
-    .pipe(plugins.rename({ extname: '.min.js' }))
-    .pipe(gulp.dest(settings.js.dest))
-)
-
-gulp.task('jslibs', () =>
-  gulp
-    .src(settings.js.source)
-    .pipe(gulp.dest(settings.js.dest))
-)
-
-
-
-
-gulp.task('js:format', () => {
-  return gulp
-    .src('src/**/*.js')
-    .pipe(plugins.prettier({ singleQuote: true }))
-    .pipe(gulp.dest('src'))
-})
-
-gulp.task('js:watch', () => gulp.watch(settings.js.monitor, gulp.series('js')))
 
 // -------------------------------------
 //   Task: Move
 // -------------------------------------
 
 gulp.task('move', () => {
-  const nonProcessed = gulp.src(['src/*/*', '!src/{js,scss,img,inc}/**/*']).pipe(gulp.dest('dist'))
+    const nonProcessed = gulp.src(['src/*/*', '!src/{js,scss,img,inc,assets}/**/*']).pipe(gulp.dest(settings.distdir))
 
-  const vendor = gulp.src('src/**/vendor/**/*').pipe(gulp.dest('dist'))
+    const vendor = gulp.src('src/**/vendor/**/*').pipe(gulp.dest(settings.distdir))
 
-  return plugins.mergeStream(nonProcessed, vendor)
+    return plugins.mergeStream(nonProcessed, vendor)
+})
+// -------------------------------------
+//   Task: CSS (css and css:watch)
+// -------------------------------------
+
+gulp.task('css', () => {
+    return gulp
+        .src(settings.css.source).pipe(
+            plugins
+                .sass({
+                    includePaths: ['node_modules']
+                })
+                .on('error', plugins.sass.logError)
+        ).pipe(gulp.dest(settings.css.dest)) // Pipe unminified
 })
 
-gulp.task('move:watch', () =>
-  gulp.watch(['src/*/*', '!src/{js,css,scss,img,inc}/**/*'], gulp.series('move'))
-)
+
+gulp.task('css:watch', () => {
+    gulp.watch(settings.css.source, gulp.series('css'));
+});
+
+// -------------------------------------
+//   Task: HTML (html,html:format,html:watch)
+// -------------------------------------
+
+gulp.task('html', () => {
+    // sources to inject script/link tags for
+    const source = gulp.src([`${settings.css.dest}/*.css`, `${settings.js.dest}/*.js`].concat(settings.js.libdest))
+
+    return gulp
+        .src(settings.html.source)
+        .pipe(
+            plugins.fileInclude({
+                prefix: '@@',
+                basepath: 'src'
+            })
+        )
+        .pipe(plugins.inlineImagesize())
+        .pipe(plugins.htmlBeautify(settings.html.formatting))
+        .pipe(
+            plugins.inject(source, {
+                addRootSlash: true,
+                ignorePath: 'dist',
+                removeTags: true
+            })
+        )
+        .pipe(gulp.dest(settings.distdir))
+})
+
+gulp.task('html:format', () => {
+    return gulp
+        .src(settings.html.source)
+        .pipe(plugins.htmlBeautify(settings.html.formatting))
+        .pipe(gulp.dest('src'))
+})
+
+gulp.task('html:watch', () => gulp.watch(settings.html.watch, gulp.series('move', 'html')))
+
+//--------------------------------------
+//    Task: js
+//-------------------------------------
+
+function js() {
+    return browserify({
+        basedir: '.',
+        debug: true,
+        entries: [settings.js.entry],
+        cache: {},
+        packageCache: {}
+    })
+        .plugin(tsify)
+        .transform('babelify', {
+            extensions: ['.ts']
+        })
+        .bundle()
+        .pipe(source(settings.js.output))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({ loadMaps: true }))
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest(settings.js.dest));
+};
+gulp.task('js', js);
+gulp.task('js:watch', () => gulp.watch(settings.js.monitor, gulp.series('js')));
+gulp.task('jslibs', () =>
+    gulp
+        .src(settings.js.libs)
+        .pipe(gulp.dest(settings.js.vendor))
+);
 
 // -------------------------------------
 //   Task: Images
 // -------------------------------------
 
 gulp.task('images', () =>
-  gulp
-    .src('src/img/**/*')
-    .pipe(gulp.dest('dist/img'))
+    gulp
+        .src('src/img/**/*')
+        .pipe(gulp.dest('dist/img'))
 )
 
 
 gulp.task('images:watch', () =>
-  gulp.watch('src/img/**/*').on('change', path => {
-    gulp
-      .src(path)
-      .pipe(
-        plugins.imagemin([
-          plugins.imagemin.optipng({ optimizationLevel: 3 }),
-          plugins.imagemin.svgo({
-            plugins: [{ removeViewBox: false }]
-          })
-        ])
-      )
-      .pipe(gulp.dest('dist/img'))
-  })
-)
+    gulp.watch('src/img/**/*', gulp.series('images'))
+);
+
+
+//--------------------------------------
+//    Task: BUILD ...default
+//--------------------------------------
+function build() {
+    return gulp.series('clean', gulp.parallel('copyData', 'jslibs', 'js', 'move', 'css'), 'html', 'images');
+}
+gulp.task('default', build());
 
 // -------------------------------------
 //   Task: browser-sync
 // -------------------------------------
 
 gulp.task('browser-sync', () => {
-  plugins.browserSync.init({ server: { baseDir: 'dist', directory: true } })
-  gulp.watch('dist/**/*').on('change', plugins.browserSync.reload)
-})
-
-// -------------------------------------
-//   Task: Default
-// -------------------------------------
-// This talk involves compiling the html, css and javascript,
-// moving fonts and other static assets and then optimizing images
-
-gulp.task('default', gulp.series('clean', gulp.parallel('css', 'jslibs', 'js', 'move', 'copyData'), 'html', 'images', 'critical'))
-// gulp.task('default', ['css', 'html', 'js', 'move', 'images']);
-
+    plugins.browserSync.init({ server: { baseDir: settings.distdir, directory: true } })
+    gulp.watch(settings.distdir + '/**/*').on('change', plugins.browserSync.reload)
+});
 
 // -------------------------------------
 //   Task: Watch
 // -------------------------------------
 
 gulp.task(
-  'watch',
-  gulp.series(
-    'default',
-    gulp.parallel(
-      'css:watch',
-      'html:watch',
-      'js:watch',
-      'move:watch',
-      'images:watch',
-      'browser-sync'
+    'watch',
+    gulp.series(
+        'default',
+        gulp.parallel(
+            'css:watch',
+            'html:watch',
+            'js:watch',
+            'images:watch',
+            'browser-sync'
+        )
     )
-  )
 )
-
-// -------------------------------------
-//   Task: Format
-// -------------------------------------
-
-gulp.task('format', gulp.parallel('js:format', 'html:format'))
-
 
