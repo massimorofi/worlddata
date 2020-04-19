@@ -1,4 +1,4 @@
-import { Database } from '../db/DataBase';
+import { Database } from '../db/database';
 
 const $ = require('jquery');
 
