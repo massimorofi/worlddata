@@ -4,7 +4,7 @@
   "description": "Typescript website for GEOKEI.COM",
   "main": "main.ts",
   "scripts": {
-    "build": "gulp",
+    "dist": "gulp",
     "watch": "gulp watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
