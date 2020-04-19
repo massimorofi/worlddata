@@ -21,7 +21,7 @@ export class Router {
         xobj.overrideMimeType('text/html');
         xobj.setRequestHeader('Access-Control-Allow-Credentials', 'true');
         xobj.setRequestHeader('Access-Control-Allow-Origin', '*');
-        xobj.setRequestHeader('Access-Control-Allow-Methods', 'GET');
+        xobj.setRequestHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
         xobj.setRequestHeader('Access-Control-Allow-Headers', 'text/html');
         xobj.onreadystatechange = function () {
             if (xobj.readyState == 4 && xobj.status == 200) {
