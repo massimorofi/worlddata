@@ -1,22 +1,26 @@
 import { Database } from '../db/database';
+import { getLineAndCharacterOfPosition } from 'typescript';
 
+// Require JS libraries that have no datatypes definition
 const Chart = require('chart.js');
 const $ = require('jquery');
-
-var dt = require('datatables.net')
-var dt_bs = require('datatables.net-bs4')
+var dt = require('datatables.net');
+var dt_bs = require('datatables.net-bs4');
+var dt_resp = require('datatables.net-responsive-bs4');
 
 // in this call we're attaching Datatables as a jQuery plugin
 // without this step $().DataTable is undefined
-dt(window, $)
-// we need to do the same step for the datatables bootstrap plugin
-dt_bs(window, $)
+dt(window, $);
+// we need to do the same step for the datatables bootstrap an responsive plugins
+dt_bs(window, $);
+dt_resp(window, $);
 
 
 
-//const utils = require('./js');
-
-export class CovidData {
+/**
+ * Covid Italy data
+ */
+export class CovidDataITA {
     dbNazionale: Database;
     dbRegioni: Database;
     diff_dead = [];
@@ -33,8 +37,9 @@ export class CovidData {
         if (this.firstLoad) {
             this.dbRegioni = new Database();
             this.dbRegioni.load({
-                fileName: '/data/dpc-covid19-ita-regioni.csv', key: 'denominazione_regione', fields: ['data', 'nuovi_positivi', 'terapia_intensiva'], callback: (data: any) => {
-                    console.log(data);
+                fileName: '/data/dpc-covid19-ita-regioni.csv', key: 'data', fields: ['denominazione_regione', 'totale_casi', 'deceduti', 'dimessi_guariti'], callback: (data: any) => {
+                    //console.log(data);
+                    this.regionalGraph();
                 }
             });
             this.dbNazionale = new Database();
@@ -53,6 +58,7 @@ export class CovidData {
             this.dailyStats();
             this.dailyIncGraph();
             this.createDataTable();
+            this.regionalGraph();
         }
 
     }
@@ -188,8 +194,9 @@ export class CovidData {
 
     // Top pane with data and statistics insidetop_page.html
     dailyStats() {
-        var index = this.dbNazionale.jsonObj.length - 1;
-        var latest = this.dbNazionale.jsonObj[index];
+        var jsonDB = this.dbNazionale.getJsonDB();
+        var index = jsonDB.length - 1;
+        var latest = jsonDB[index];
         var newLocal = new Date(latest.data);
         document.getElementById("data.data").innerHTML = (newLocal).toDateString() + " at " + newLocal.toLocaleTimeString();
         document.getElementById("data.terapia_intensiva").innerHTML = "Intensive Care Unit: " + latest.terapia_intensiva;
@@ -219,8 +226,9 @@ export class CovidData {
         var data = this.dbNazionale.data.get('ITA');
 
         var t = $('#data-table').DataTable({
-            "deferRender": true,
-            "order": [[0, "desc"]]
+            deferRender: true,
+            responsive: true,
+            order: [[0, "desc"]]
         });
         var l = data.get('data').length;
         for (var i = 0; i < l; i++) {
@@ -242,5 +250,76 @@ export class CovidData {
         };
     }
     private pad(s) { return (s < 10) ? '0' + s : s; };
+
+
+    regionalGraph() {
+        var ctx = document.getElementById('covid-regional-ita');
+        var dataset = Array.from(this.dbRegioni.getDB().keys());
+        //console.log(dataset)
+        var latest = dataset[dataset.length - 1];
+        var data = this.dbRegioni.getDB().get(latest);
+        //console.log(latest);
+        //console.log(data);
+        var totale_casi = data.get('totale_casi');
+        var deceduti = data.get('deceduti');
+        var guariti = data.get('dimessi_guariti');
+        var lab = data.get('denominazione_regione');
+        var regionalChart = new Chart(ctx, {
+            type: 'horizontalBar',
+            data: {
+                labels: lab,
+                datasets: [{
+                    label: 'Total Infects',
+                    data: totale_casi,
+                    fill: true,
+                    borderColor: 'blue',
+                    backgroundColor: 'blue',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Deads',
+                    data: deceduti,
+                    fill: true,
+                    borderColor: 'red',
+                    backgroundColor: 'red',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Healed',
+                    data: guariti,
+                    fill: true,
+                    borderColor: 'green',
+                    backgroundColor: 'green',
+                    borderWidth: 1
+                }
+                ]
+            },
+            options: {
+                responsive: true,
+                animation: {
+                    duration: 0 // general animation time
+                },
+                hover: {
+                    animationDuration: 0 // duration of animations when hovering an item
+                },
+                responsiveAnimationDuration: 0,
+                title: {
+                    display: true,
+                    text: 'Regional BreakDown'
+                },
+                elements: {
+                    rectangle: {
+                        borderWidth: 2,
+                    }
+                },
+                scales: {
+                    x: {
+                        suggestedMin: 0,
+                        suggestedMax: 55000
+                    }
+                }
+            }
+        });
+    };
 
 }

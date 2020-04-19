@@ -11,7 +11,9 @@ export class Router {
      * @param source route ID (can be the same IT fo the HTL element that is clicked)
      * Load HTML Portion
      */
-    route(source: string) {
+    async route(source: string) {
+        //console.log(source);
+        //console.log(this.map)
         var r = this.map.get(source);
         var fileName = r.path;
         var xobj = new XMLHttpRequest();
@@ -95,9 +97,12 @@ export class Router {
     addSingleRoute(route: Route) {
         this.map.set(route.source, route);
         var node = document.getElementById(route.source);
-        node.addEventListener('click', this.clickListener());
-        node.setAttribute('href', '#' + route.source);
+        if (node != undefined) {
+            node.addEventListener('click', this.clickListener());
+            node.setAttribute('href', '#' + route.source);
+        }
     };
+
 
 }
 

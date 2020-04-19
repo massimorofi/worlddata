@@ -1,5 +1,5 @@
 {
-  "name": "WorldOfData",
+  "name": "worldofdata",
   "version": "0.1.0",
   "description": "Typescript website for GEOKEI.COM",
   "main": "main.ts",
@@ -46,6 +46,7 @@
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
     "datatables.net-bs4": "^1.10.20",
+    "datatables.net-responsive-bs4": "^2.2.3",
     "jquery": "^3.4.1",
     "jquery-csv": "^1.0.11",
     "popper.js": "^1.16.1"

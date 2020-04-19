@@ -1,5 +1,6 @@
 import { Router, Route } from './routing/Router';
-import { CovidData } from './pages/covid-ita'
+import { CovidDataITA } from './pages/covid-ita';
+import { CovidWorld } from './pages/covid-world';
 
 
 var mainRouter = new Router();
@@ -8,12 +9,12 @@ var mainRouter = new Router();
  */
 function menuRoutingDefinition() {
 
-    var covid = new CovidData();
+    var covid = new CovidDataITA();
     // Define single route to be reused (covid italy)
     var covitaRoute = new Route('covid-ita-shortcut', 'panel', 'html/covid-ita.html', () => {
         covid.loadData();
     });
-    //r.addSingleRoute(covitaRoute);
+    mainRouter.addSingleRoute(covitaRoute);
     // Add Navigation Menu Routes
     //router.addRoute(<ID>: source html element, <HTML Element>: destination html element ID, <Path to HTML File>,<Function>));
     mainRouter.addRoute('news', 'panel', 'html/news.html', () => {
@@ -23,9 +24,12 @@ function menuRoutingDefinition() {
         covid.loadData();
     });
     mainRouter.addRoute('contacts', 'panel', 'html/contacts.html', null);
-    // covid-ita-shortcut
-
-
+    // covid-world-shortcut
+    var covidWorld = new CovidWorld();
+    mainRouter.addRoute('covid-main', 'panel', 'html/Covid-world.html', () => {
+        covidWorld.load();
+    });
+  
 }
 
 var open = false;
@@ -45,6 +49,22 @@ function addMenuListeners() {
 }
 
 /**
+ * set initial page
+ * if url has target i.e.: http://host/index.html#covid-ita will open that page
+ * otherwise a default news page will be opened. Routing is used for it 
+ */
+async function setInitPage() {
+    const targetPage = window.location.href.split('#')[1];
+    if (targetPage != undefined) {
+        console.log('Setting main Page:::' + targetPage);
+        mainRouter.route(targetPage);
+    }
+    else {
+        mainRouter.route('news');
+    }
+}
+
+/**
  * >>>>>>>> MAIN FUNCTION <<<<<<<<<<<<
  */
 function main() {
@@ -52,20 +72,13 @@ function main() {
     menuRoutingDefinition();
     // set eventlisteners
     addMenuListeners();
-    // set initial page
-    // if url has target i.e.: http://host/index.html#covid-ita will open that page
-    // otherwise a default news page will be opened. Routing is used for it 
-    const targetPage = window.location.href.split('#')[1];
-    if (targetPage != undefined) {
-        console.log(targetPage);
-        mainRouter.route(targetPage);
-    }else{
-        mainRouter.route('news');
-    }
+    setInitPage();
 }
 
 // Run main function
 main();
+
+
 
 
 

@@ -7,7 +7,8 @@ export class Database {
      *  Map<k,Map<fieldName,[...values...]>
      * */
     data: Map<string, Map<string, string[]>>;
-    jsonObj: any;
+    //jsonObj: any;
+    rawData: string;
 
     constructor() {
         this.data = new Map<string, Map<string, string[]>>();
@@ -20,13 +21,25 @@ export class Database {
         return this.data;
     }
 
+    getCSV() {
+        return csv.toArray(this.rawData);
+    }
+
+    getJsonDB() {
+        return csv.toObjects(this.rawData);
+    }
+
+    /**
+     * 
+     * @param 
+     */
     load({ fileName, key, fields, callback }: { fileName: string; key: string; fields: string[]; callback: (rawdata: Map<string, Map<string, string[]>>) => any; }) {
         this.loadRemoteFile(fileName, "text/csv", (response: string) => {
-            var rawdata = csv.toObjects(response);
-            this.jsonObj = rawdata;
-            this.data = Transformer.getFields(rawdata, key, fields);
+            this.rawData = response;
+            var jsonData = csv.toObjects(response);
+            this.data = Transformer.getFields(jsonData, key, fields);
             if (callback != null) {
-               // console.log(this.data);
+                // console.log(this.data);
                 callback(this.data);
             }
         })
