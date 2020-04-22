@@ -1,4 +1,5 @@
 import * as $ from 'jquery';
+import { RemoteLoader } from './RemoteLoader';
 
 export class Router {
     map: Map<string, Route>;
@@ -8,34 +9,23 @@ export class Router {
     }
     /**
      * 
-     * @param source route ID (can be the same IT fo the HTL element that is clicked)
+     * @param source route ID (can be the same ID for the HTML element that is clicked)
      * Load HTML Portion
      */
     async route(source: string) {
-        //console.log(source);
-        //console.log(this.map)
         var r = this.map.get(source);
         var fileName = r.path;
-        var xobj = new XMLHttpRequest();
-        xobj.open('GET', fileName, true);
-        xobj.overrideMimeType('text/html');
-        xobj.setRequestHeader('Access-Control-Allow-Credentials', 'true');
-        xobj.setRequestHeader('Access-Control-Allow-Origin', '*');
-        xobj.setRequestHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
-        xobj.setRequestHeader('Access-Control-Allow-Headers', 'text/html');
-        xobj.onreadystatechange = function () {
-            if (xobj.readyState == 4 && xobj.status == 200) {
-                // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-                //console.log(id + "--->" + xobj.responseText);
-                Router.removeRow(r.target);
-                Router.addRow(r.target, xobj.responseText);
-                if (r.func != null) {
-                    r.func();
-                }
+        RemoteLoader.loadFile(r.path, 'text/html', (xobj:XMLHttpRequest) => {
+            Router.removeRow(r.target);
+            Router.addRow(r.target, xobj.responseText);
+            if (r.func != null) {
+                r.func();
             }
-        };
-        xobj.send(null);
+        });
     }
+
+
+
     /**
      * 
      * @param parent HTML wlement to which the HTML will be appended

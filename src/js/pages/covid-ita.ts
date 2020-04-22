@@ -1,5 +1,5 @@
 import { Database } from '../db/database';
-import { getLineAndCharacterOfPosition } from 'typescript';
+
 
 // Require JS libraries that have no datatypes definition
 const Chart = require('chart.js');
@@ -265,7 +265,7 @@ export class CovidDataITA {
         var guariti = data.get('dimessi_guariti');
         var lab = data.get('denominazione_regione');
         var regionalChart = new Chart(ctx, {
-            type: 'horizontalBar',
+            type: 'bar',
             data: {
                 labels: lab,
                 datasets: [{

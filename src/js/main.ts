@@ -1,6 +1,7 @@
 import { Router, Route } from './routing/Router';
 import { CovidDataITA } from './pages/covid-ita';
 import { CovidWorld } from './pages/covid-world';
+import { News } from './pages/news';
 
 
 var mainRouter = new Router();
@@ -19,6 +20,7 @@ function menuRoutingDefinition() {
     //router.addRoute(<ID>: source html element, <HTML Element>: destination html element ID, <Path to HTML File>,<Function>));
     mainRouter.addRoute('news', 'panel', 'html/news.html', () => {
         mainRouter.addSingleRoute(covitaRoute);
+        News.loadFeeds(['https://news.yahoo.com/rss/popularstories?s=covid'], 20);
     });
     mainRouter.addRoute('covid-ita', 'panel', 'html/covid-ita.html', () => {
         covid.loadData();
@@ -29,19 +31,17 @@ function menuRoutingDefinition() {
     mainRouter.addRoute('covid-main', 'panel', 'html/Covid-world.html', () => {
         covidWorld.load();
     });
-  
+
 }
 
-var open = false;
+
 /* Set the width of the side navigation to 0 */
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
 }
-
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
-
 function addMenuListeners() {
     document.getElementById('open-btn').addEventListener('click', () => { openNav(); });
     document.getElementById('close-btn').addEventListener('click', () => { closeNav(); });
