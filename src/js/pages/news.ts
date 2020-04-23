@@ -15,9 +15,8 @@ export class News {
     }
 
     static loadSingleFeed(url: string, max: number, group: Element) {
-
-        RemoteLoader.loadFile(url, 'text/plain', (response: XMLHttpRequest) => {
-            //console.log('@@@@'+response);
+        RemoteLoader.loadFile(url, 'text/xml', (response: XMLHttpRequest) => {
+            console.log('@@@@' + response);
             var rss = (new DOMParser()).parseFromString(response.responseText, 'text/xml');
             var items = rss.getElementsByTagName('item');
             //console.log(items[0]);
