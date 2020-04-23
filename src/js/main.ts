@@ -20,7 +20,7 @@ function menuRoutingDefinition() {
     //router.addRoute(<ID>: source html element, <HTML Element>: destination html element ID, <Path to HTML File>,<Function>));
     mainRouter.addRoute('news', 'panel', 'html/news.html', () => {
         mainRouter.addSingleRoute(covitaRoute);
-        News.loadFeeds(['https://news.yahoo.com/rss/popularstories?s=covid'], 20);
+        News.loadFeeds(['https://news.yahoo.com/rss/mostviewed'], 20);
     });
     mainRouter.addRoute('covid-ita', 'panel', 'html/covid-ita.html', () => {
         covid.loadData();
@@ -63,6 +63,7 @@ async function setInitPage() {
         mainRouter.route('news');
     }
 }
+
 
 /**
  * >>>>>>>> MAIN FUNCTION <<<<<<<<<<<<
