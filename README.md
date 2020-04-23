@@ -2,7 +2,6 @@
 # Statistics Charts using open data --- BETA---
 - COVID-19 Italy data set used as sample
 
-![World of Data](src/img/World-Map-Triangles-Wireframe.svg)
 
 BUILD
 The build uses GULP and is readapted from : https://github.com/adamisntdead/boilerplate
