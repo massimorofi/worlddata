@@ -6,6 +6,7 @@ var tsify = require('tsify');
 var sourcemaps = require('gulp-sourcemaps');
 var buffer = require('vinyl-buffer');
 var del = require('del');
+var uglify = require('gulp-uglify');
 
 
 var plugins = require('gulp-load-plugins')({
@@ -57,7 +58,7 @@ var settings = {
         libdest: [],
         monitor: ['src/**/*.ts'],
         entry: './src/js/main.ts',
-        output: 'bundle.js',
+        output: 'bundle.min.js',
         dest: ''
     }
 }
@@ -81,7 +82,9 @@ console.log(settings.js.libdest);
 //--------------------------------------
 gulp.task('copyData', () => gulp.src(settings.assets.source).pipe(gulp.dest(settings.distdir)));
 
-
+gulp.task('data:watch', () => {
+    gulp.watch(settings.assets.source, gulp.series('copyData'));
+});
 
 //--------------------------------------
 //    Task: Clean
@@ -180,6 +183,8 @@ function js() {
         .pipe(source(settings.js.output))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
+        .pipe(uglify())
+        .on('error', standardHandler)
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(settings.js.dest));
 };
@@ -190,6 +195,13 @@ gulp.task('jslibs', () =>
         .src(settings.js.libs)
         .pipe(gulp.dest(settings.js.vendor))
 );
+
+// Standard handler
+function standardHandler(err) {
+    // Log to console
+    console.log(util.colors.red('Error'), err.message);
+    this.emit('end');
+}
 
 // -------------------------------------
 //   Task: Images
@@ -233,6 +245,7 @@ gulp.task(
     gulp.series(
         'default',
         gulp.parallel(
+            'data:watch',
             'css:watch',
             'html:watch',
             'js:watch',
