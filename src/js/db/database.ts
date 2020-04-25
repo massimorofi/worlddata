@@ -37,9 +37,10 @@ export class Database {
         this.loadRemoteFile(fileName, "text/csv", (response: string) => {
             this.rawData = response;
             var jsonData = csv.toObjects(response);
+            //console.log(jsonData);
             this.data = Transformer.getFields(jsonData, key, fields);
             if (callback != null) {
-                // console.log(this.data);
+                //console.log(this.data);
                 callback(this.data);
             }
         })
