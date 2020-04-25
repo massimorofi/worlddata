@@ -58,7 +58,7 @@ var settings = {
         libdest: [],
         monitor: ['src/**/*.ts'],
         entry: './src/js/main.ts',
-        output: 'bundle.min.js',
+        output: 'bundle-'+((new Date()).getTime())+'.min.js',
         dest: ''
     }
 }
