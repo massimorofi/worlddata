@@ -26,7 +26,7 @@ export class CovidWorld {
                 fileName: '/data/world-covid.csv', key: 'COUNTRIESANDTERRITORIES',
                 fields: ['DATEREP', 'CASES', 'DEATHS', 'POPDATA2018'],
                 callback: () => {
-                    this.calculateTotals();
+                    //this.calculateTotals();
                     this.createDataTable();
                     this.firstLoad = false;
                 }
@@ -59,9 +59,10 @@ export class CovidWorld {
                 key,
                 data.get('CASES')[l],
                 data.get('DEATHS')[l],
-                data.get('POPDATA2018')[l]
+                Number(data.get('POPDATA2018')[l]).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
             ]).draw(false);
         });
+        $('#covid-world-lastupdate').text(db.get('Italy').get('DATEREP')[0]);
     };
     private pad(s) { return (s < 10) ? '0' + s : s; };
 
