@@ -56,11 +56,11 @@ export class CovidWorld {
         var dataset = Array.from(this.wmDB.getDB().keys());
         var lastUpdate = dataset[0];
         document.getElementById('covid-stats-lastupdate').innerText = lastUpdate;
-        console.log(this.wmDB.getDB());
-        console.log(dataset)
+        //console.log(this.wmDB.getDB());
+        //console.log(dataset)
         var latest = dataset[dataset.length - 1];
         var data = this.wmDB.getDB().get(latest);
-        console.log(latest);
+        //console.log(latest);
         //console.log(data);
         var cases = data.get('TOT_CASES_1M_POP');
         var deaths = data.get('DEATHS_1M_POP');
