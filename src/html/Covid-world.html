@@ -1,10 +1,36 @@
 <div class="alert alert-info" role="alert">
-    <h5>Last Update [<a id="covid-world-lastupdate"></a>]</h5>
+    <h5 style="text-align:center">Comparison between selected countries</h5>
     <strong>
-        <p>Source: EU open data downlodable <a
-                href="https://data.europa.eu/euodp/en/data/dataset/covid-19-coronavirus-data" target="_blank">here</a>
+        <p style="text-align:center">Data collected WorldoMeter website <a
+                href="https://www.worldometers.info/coronavirus/" target="_blank">here</a>
+            Last Update [<a id="covid-stats-lastupdate"></a>]
         </p>
-        <p>NOTE: The date are aggregate by country at last available update</p>
+        <i>
+            <p style="text-align:center">DESCRIPTION: data are collected by WorldoMeter via several gouvernment sources
+                and
+                altought manually updated,those seems to be quite reliable.
+                <br>
+                Normalizing the data against the population (census 2018) gives a better perspective around the
+                diffusion of the disease.
+                <br>
+                In particular, for the tests (number of tampons done), the relation to the population gives a better
+                meter to compare statistically etherogeneous countries.
+            </p>
+        </i>
+    </strong>
+</div>
+<div class="row">
+    <canvas id="covid-stats-world" style="width:800px;height:300px;"></canvas>
+</div>
+<div class="alert alert-dark" role="alert">
+    <h5 style="text-align:center">Below the raw main data provided by European Open Data</h5>
+    <strong>
+        <p style="text-align:center">Source: EU open data downlodable <a
+                href="https://data.europa.eu/euodp/en/data/dataset/covid-19-coronavirus-data" target="_blank">here</a>
+            Last Update [<a id="covid-world-lastupdate"></a>]</p>
+        <i>
+            <p style="text-align:center">NOTE: The date are aggregate by country at last available update</p>
+        </i>
     </strong>
 </div>
 <hr>
