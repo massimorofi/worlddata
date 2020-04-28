@@ -51,8 +51,18 @@ export class CovidWorld {
         }
     }
 
+    setBarData(title: string, cases: string[], bColor: string, bkColor: string) {
+        return [{
+            label: title,
+            data: cases,
+            fill: true,
+            borderColor: bColor,
+            backgroundColor: bkColor,
+            borderWidth: 1
+        }];
+    }
+
     statGraph() {
-        var ctx = document.getElementById('covid-stats-world');
         var dataset = Array.from(this.wmDB.getDB().keys());
         var lastUpdate = dataset[0];
         document.getElementById('covid-stats-lastupdate').innerText = lastUpdate;
@@ -66,35 +76,26 @@ export class CovidWorld {
         var deaths = data.get('DEATHS_1M_POP');
         var tampons = data.get('TESTS_1M_POP');
         var lab = data.get('COUNTRY');
-        var regionalChart = new Chart(ctx, {
+        // set data to be drawn
+        var ctx = document.getElementById('covid-infected-world');
+        var infected = this.setBarData('Infected', cases, 'blue', 'rgba(64, 64, 255, 0.3)');
+        this.drawBarGraph(ctx, lab, lastUpdate, infected);
+        ctx = document.getElementById('covid-deaths-world');
+        var deceased = this.setBarData('Deaths', deaths, 'red', 'rgba(255, 64, 64, 0.3)');
+        this.drawBarGraph(ctx, lab, lastUpdate, deceased);
+        ctx = document.getElementById('covid-tampons-world');
+        var tested = this.setBarData('Tampons', tampons, 'green', 'rgba(64, 255, 64, 0.3)');
+        this.drawBarGraph(ctx, lab, lastUpdate, tested);
+    };
+
+
+
+    private drawBarGraph(ctx: HTMLElement, lab: string[], lastUpdate: string, dataSets: any[]) {
+        return new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: lab,
-                datasets: [{
-                    label: 'Infects',
-                    data: cases,
-                    fill: true,
-                    borderColor: 'blue',
-                    backgroundColor: 'blue',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Deaths',
-                    data: deaths,
-                    fill: true,
-                    borderColor: 'red',
-                    backgroundColor: 'red',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Tested',
-                    data: tampons,
-                    fill: true,
-                    borderColor: 'green',
-                    backgroundColor: 'green',
-                    borderWidth: 1
-                }
-                ]
+                datasets: dataSets
             },
             options: {
                 responsive: true,
@@ -107,7 +108,7 @@ export class CovidWorld {
                 responsiveAnimationDuration: 0,
                 title: {
                     display: true,
-                    text: 'Global COVID-19 Stats per Million of Population. Updated [' + lastUpdate + ']'
+                    text:'Values per Million of Population.'
                 },
                 elements: {
                     rectangle: {
@@ -122,9 +123,7 @@ export class CovidWorld {
                 }
             }
         });
-    };
-
-
+    }
 
     /**
      * Create the table from EU Open Data 
