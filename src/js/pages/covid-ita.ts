@@ -51,6 +51,7 @@ export class CovidDataITA {
                         this.dailyStats();
                         this.dailyIncGraph();
                         this.createDataTable();
+                        //console.log(data);
                         this.firstLoad = false;
                     }
             });
@@ -195,8 +196,9 @@ export class CovidDataITA {
     // Top pane with data and statistics insidetop_page.html
     dailyStats() {
         var jsonDB = this.dbNazionale.getJsonDB();
-        var index = jsonDB.length - 1;
+        var index = this.dbNazionale.getDB().get('ITA').get('data').length-1;
         var latest = jsonDB[index];
+        //console.log(latest);
         var newLocal = new Date(latest.data);
         document.getElementById("data.data").innerHTML = (newLocal).toDateString() + " at " + newLocal.toLocaleTimeString();
         document.getElementById("data.terapia_intensiva").innerHTML = "Intensive Care Unit: " + latest.terapia_intensiva;
