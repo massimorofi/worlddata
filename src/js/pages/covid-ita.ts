@@ -151,7 +151,7 @@ export class CovidDataITA {
                 ]
             },
             options: {
-                responsive: true,
+                responsive: false,
                 animation: {
                     duration: 0 // general animation time
                 },
@@ -297,7 +297,7 @@ export class CovidDataITA {
                 ]
             },
             options: {
-                responsive: true,
+                responsive: false,
                 animation: {
                     duration: 0 // general animation time
                 },

@@ -25,7 +25,7 @@ function menuRoutingDefinition() {
     mainRouter.addRoute('covid-ita', 'panel', 'html/covid-ita.html', () => {
         covid.loadData();
     });
-    mainRouter.addRoute('contacts', 'panel', 'html/contacts.html', null);
+    mainRouter.addRoute('about', 'panel', 'html/about.html', null);
     // covid-world-shortcut
     var covidWorld = new CovidWorld();
     mainRouter.addRoute('covid-main', 'panel', 'html/Covid-world.html', () => {

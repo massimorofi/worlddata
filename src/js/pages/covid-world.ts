@@ -99,6 +99,7 @@ export class CovidWorld {
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 animation: {
                     duration: 0 // general animation time
                 },

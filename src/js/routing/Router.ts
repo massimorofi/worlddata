@@ -33,7 +33,7 @@ export class Router {
      */
     static addRow(parent: string, html: string) {
         const div = document.createElement('div');
-        div.className = parent + '.row';
+        div.id = parent + '.row';
         div.innerHTML = html;
         document.getElementById(parent).appendChild(div);
     }
