@@ -23,16 +23,23 @@
 
 
 <body>
-    <!--Main Container-->
-    <div class="container-fluid">
+    <header>
         <!--Navigation Menu-->
         @@include('html/sections/navigation.html')
-        <br>
-        <!--Dynamic Content loaded via navigation and routing-->
-        <div   id="panel">
-        </div>
-    </div>
+    </header>
 
+    <!--Main Container-->
+    <main>
+        <!--Main layout-->
+        <div class="container" id="panel">
+            <!--Dynamic Content loaded >>>HERE<<< via navigation and routing-->
+        </div>
+    </main>
+
+    <!--Footer-->
+    <footer class="py-5 bg-dark">
+        @@include('html/sections/footer.html')
+    </footer>
 
     <!--LOADING SCRIPTS-->
 
@@ -50,7 +57,8 @@
         gtag('js', new Date());
         gtag('config', 'UA-41047512-2');
     </script>
-
+    <!--TWITTER-->
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 
 </html>
