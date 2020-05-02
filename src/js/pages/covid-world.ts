@@ -109,7 +109,7 @@ export class CovidWorld {
                 responsiveAnimationDuration: 0,
                 title: {
                     display: true,
-                    text:'Values per Million of Population.'
+                    text: 'Values per Million of Population.'
                 },
                 elements: {
                     rectangle: {
@@ -133,29 +133,33 @@ export class CovidWorld {
         var db = this.dbEU.getDB();
         //console.log(db);
         //console.log('Creating CW table...');
-        var t = $('#covid-table-world').DataTable({
-            deferRender: true,
-            responsive: true,
-            //pageLength: 300,
-            order: [[1, "desc"]]
-        });
 
-        db.forEach((value, key, map) => {
-            // create a new row
-            var data = db.get(key);
-            var l = 0;
-            //console.log(key);
-            //console.log(value);
-            //var time = new Date(data.get('dataRep')[l]);
-            t.row.add([
-                key,
-                data.get('CASES')[l],
-                data.get('DEATHS')[l],
-                Number(data.get('POPDATA2018')[l]).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-            ]).draw(false);
+        $(document).ready(function () {
+            var t = $('#covid-table-world').DataTable({
+                deferRender: true,
+                responsive: true,
+                //pageLength: 300,
+                order: [[1, "desc"]]
+            });
+
+            db.forEach((value, key, map) => {
+                // create a new row
+                var data = db.get(key);
+                var l = 0;
+                //console.log(key);
+                //console.log(value);
+                //var time = new Date(data.get('dataRep')[l]);
+                t.row.add([
+                    key,
+                    data.get('CASES')[l],
+                    data.get('DEATHS')[l],
+                    Number(data.get('POPDATA2018')[l]).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+                ]).draw(false);
+            });
+            $('#covid-world-lastupdate').text(db.get('Italy').get('DATEREP')[0]);
         });
-        $('#covid-world-lastupdate').text(db.get('Italy').get('DATEREP')[0]);
     };
+
     private pad(s) { return (s < 10) ? '0' + s : s; };
     /**
      * Calculate the total... not usen anymore

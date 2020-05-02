@@ -27,6 +27,7 @@ var settings = {
         source: [
             'node_modules/bootstrap/dist/css/bootstrap.min.css',
             'node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css',
+            'node_modules/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css',
             './src/scss/**/*.{scss,sass,css}'
         ],
         dest: ''
