@@ -31,7 +31,7 @@ function menuRoutingDefinition() {
     mainRouter.addRoute('covid-main', 'panel', 'html/Covid-world.html', () => {
         covidWorld.load();
     });
-
+    mainRouter.addRoute('economy-main', 'panel', 'html/economy-main.html', null);
 }
 
 
