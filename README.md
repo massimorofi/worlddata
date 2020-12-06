@@ -2,6 +2,9 @@
 # Statistics Charts using open data --- BETA---
 - COVID-19 Italy data set used as sample
 
+PREREQUISITE 
+Install GULP: 
+> npm install --global gulp-cli
 
 BUILD
 The build uses GULP and is readapted from : https://github.com/adamisntdead/boilerplate
